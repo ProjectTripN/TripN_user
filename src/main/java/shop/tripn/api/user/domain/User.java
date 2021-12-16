@@ -8,6 +8,7 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -37,11 +38,13 @@ public class User {
     @Column(length = 30) private @NotNull String card_number;
     @Column(length = 10) private @NotNull String card_company;
     @Column private @NotNull String mbti_list;
-    @Column private @NotNull String person_category;
     @Column(name = "reg_date", length = 20) private @NotNull String regDate;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    public List<Role> roles;
 
     public User toEntity() {
         return new User(userId, username, password, name, first_name, last_name, email, birth, gender, address, phone_number, passport,
-                mbti, card_number, card_company, mbti_list, person_category, regDate);
+                mbti, card_number, card_company, mbti_list, regDate, roles);
     }
 }

@@ -1,5 +1,6 @@
 package shop.tripn.api.user.controller;
 
+import io.swagger.annotations.*;
 import jdk.dynalink.linker.LinkerServices;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
+@Api(tags = "users")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -28,7 +30,13 @@ public class UserController implements CommonController<User, Long> {
 
 
     @PostMapping("/join")
-    public ResponseEntity<String> save(@RequestBody User user) {
+    @ApiOperation(value="${UserController.signup}")
+    @ApiResponses(value={
+            @ApiResponse(code=400,message = "Something Wrong"),
+            @ApiResponse(code=403,message = "승인거절"),
+            @ApiResponse(code=422,message = "중복된 ID"),
+    })
+    public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
         logger.info(String.format("회원가입 정보: %s", user.toString()));
         User u = user.toEntity();
         userRepository.save(u);
@@ -51,7 +59,12 @@ public class UserController implements CommonController<User, Long> {
 //    }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user){
+    @ApiOperation(value="${UserController.signin}")
+    @ApiResponses(value={
+            @ApiResponse(code=400,message = "Something Wrong"),
+            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")
+    })
+    public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user){
         logger.info(String.format("로그인 정보: %s", user.toString()));
         return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()).orElse(new User()));
     }
@@ -71,33 +84,33 @@ public class UserController implements CommonController<User, Long> {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<User>> findByName(@PathVariable String name) {
-        logger.info(String.format("회원이름으로 찾기 : %s ", userRepository.findByName(name)));
-        return ResponseEntity.ok().body(userRepository.findByName(name));
+    public ResponseEntity<List<User>> searchByName(@PathVariable String name) {
+        logger.info(String.format("회원이름으로 찾기 : %s ", userRepository.searchByName(name)));
+        return ResponseEntity.ok().body(userRepository.searchByName(name));
     }
 
     @GetMapping("/phoneNumber/{phone_number}")
-    public ResponseEntity<List<User>> findByPhoneNumber(@PathVariable String phone_number){
-        logger.info(String.format("휴대폰번호로 찾기 : %s", userRepository.findByPhoneNumber(phone_number)));
-        return ResponseEntity.ok().body(userRepository.findByPhoneNumber(phone_number));
+    public ResponseEntity<List<User>> searchByPhoneNumber(@PathVariable String phone_number){
+        logger.info(String.format("휴대폰번호로 찾기 : %s", userRepository.searchByPhoneNumber(phone_number)));
+        return ResponseEntity.ok().body(userRepository.searchByPhoneNumber(phone_number));
     }
 
     @GetMapping("/birth/{birth}")
-    public ResponseEntity<List<User>> findByBirth(@PathVariable String birth){
-        logger.info(String.format("생년월일로 찾기 : %s", userRepository.findByBirth(birth)));
-        return ResponseEntity.ok().body(userRepository.findByBirth(birth));
+    public ResponseEntity<List<User>> searchByBirth(@PathVariable String birth){
+        logger.info(String.format("생년월일로 찾기 : %s", userRepository.searchByBirth(birth)));
+        return ResponseEntity.ok().body(userRepository.searchByBirth(birth));
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<List<User>> findByEmail(@PathVariable String email){
-        logger.info(String.format("이메일로 찾기 : %s", userRepository.findByEmail(email)));
-        return ResponseEntity.ok().body(userRepository.findByEmail(email));
+    public ResponseEntity<List<User>> findByPassword(@PathVariable String email){
+        logger.info(String.format("이메일로 찾기 : %s", userRepository.findByPassword(email)));
+        return ResponseEntity.ok().body(userRepository.findByPassword(email));
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<List<User>> findByUsername(@PathVariable String username){
-        logger.info(String.format("Username 으로 찾기 : %s", userRepository.findByUsername(username)));
-        return ResponseEntity.ok().body(userRepository.findByUsername(username));
+    public ResponseEntity<List<User>> searchByUsername(@PathVariable String username){
+        logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
+        return ResponseEntity.ok().body(userRepository.searchByUsername(username));
     }
 
 //    @GetMapping("/{password}")

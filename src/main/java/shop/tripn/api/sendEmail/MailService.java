@@ -37,7 +37,7 @@ public class MailService {
             mailHandler.setTo(mailDto.getAddress());
             mailHandler.setFrom(MailService.FROM_ADDRESS);
             mailHandler.setSubject(mailDto.getName()+"님의 TripN 임시비밀번호 안내 이메일 입니다.");
-            userRepository.updatePassword(str);
+            userRepository.updatePassword(mailDto.getEmail(), str);
             mailHandler.setText("안녕하세요.\n\n TripN 임시비밀번호 안내 관련 이메일 입니다.\n\n"+mailDto.getName()+"님의 임시 비밀번호는 '"
             +str+"' 입니다.\n\n 아래 링크를 통해 비밀번호를 변경해 주세요.");
 

@@ -28,7 +28,6 @@ public class UserDTO implements Serializable {
     private String card_number;
     private String card_company;
     private String mbti_list;
-    private String person_category;
     private String regDate;
 
 
@@ -38,7 +37,7 @@ public class UserDTO implements Serializable {
     UserDTO(long userId, String username, String password, String name,
             String first_name,String last_name, String email, String birth,
             String gender, String address, String phone_number, String passport, String mbti,
-            String card_number, String card_company, String mbti_list, String person_category, String regDate) {
+            String card_number, String card_company, String mbti_list, String regDate) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -55,7 +54,6 @@ public class UserDTO implements Serializable {
         this.card_number = card_number;
         this.card_company = card_company;
         this.mbti_list = mbti_list;
-        this.person_category = person_category;
         this.regDate = regDate;
     }
 }
