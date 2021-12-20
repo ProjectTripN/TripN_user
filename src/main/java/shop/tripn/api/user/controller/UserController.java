@@ -133,12 +133,12 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
-    @PutMapping("/mbti")
-    public ResponseEntity<User> updateMbti(@RequestBody User user){
-        String mbti = user.getMbti();
-        logger.info(String.format("mbti update", user.getMbti()));
-        return ResponseEntity.ok(userRepository.updateMbti(userId, mbti));
-    }
+//    @PutMapping("/mbti")
+//    public ResponseEntity<User> updateMbti(@RequestBody User user){
+//        String mbti = user.getMbti();
+//        logger.info(String.format("mbti update", user.getMbti()));
+//        return ResponseEntity.ok(userRepository.updateMbti(userId, mbti));
+//    }
 //    @PutMapping("/password")
 //    public ResponseEntity<User> updatePassword(@PathVariable String password){
 ////        logger.info(String.format("비밀번호 변경: ", userRepository.updatePassword(password));
