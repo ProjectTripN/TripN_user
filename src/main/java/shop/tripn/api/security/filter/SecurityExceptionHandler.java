@@ -47,7 +47,7 @@ public class SecurityExceptionHandler {
 
         Messenger response = Messenger.builder()
                 .code(ErrorCode.LOGIN_FAILED.getCode())
-                .message(ErrorCode.LOGIN_FAILED.getMsg())
+                .message(ErrorCode.LOGIN_FAILED.getMessage())
                 .status(ErrorCode.LOGIN_FAILED.getStatus())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -59,7 +59,7 @@ public class SecurityExceptionHandler {
 
         Messenger response = Messenger.builder()
                 .code(ErrorCode.ACCESS_DENIED.getCode())
-                .message(ErrorCode.ACCESS_DENIED.getMsg())
+                .message(ErrorCode.ACCESS_DENIED.getMessage())
                 .status(ErrorCode.ACCESS_DENIED.getStatus())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -71,7 +71,7 @@ public class SecurityExceptionHandler {
 
         Messenger response = Messenger.builder()
                 .code(ErrorCode.ACCESS_DENIED.getCode())
-                .message(ErrorCode.ACCESS_DENIED.getMsg())
+                .message(ErrorCode.ACCESS_DENIED.getMessage())
                 .status(ErrorCode.ACCESS_DENIED.getStatus())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
@@ -83,7 +83,7 @@ public class SecurityExceptionHandler {
 
         Messenger response = Messenger.builder()
                 .code(ErrorCode.AUTHENTICATION_FAILED.getCode())
-                .message(ErrorCode.AUTHENTICATION_FAILED.getMsg())
+                .message(ErrorCode.AUTHENTICATION_FAILED.getMessage())
                 .status(ErrorCode.AUTHENTICATION_FAILED.getStatus())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);

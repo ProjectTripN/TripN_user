@@ -29,7 +29,7 @@ public class User {
     @Column(length = 20) private @NotNull String first_name;
     @Column(length = 20) private @NotNull String last_name;
     @Column(length = 20) private @NotNull String email;
-    @Column private @NotNull int birth;
+    @Column private @NotNull String birth;
     @Column(length = 10) private @NotNull String gender;
     @Column(length = 100) private @NotNull String address;
     @Column(length = 50) private @NotNull String phone_number;

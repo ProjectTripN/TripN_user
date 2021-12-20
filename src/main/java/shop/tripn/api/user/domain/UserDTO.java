@@ -3,11 +3,13 @@ package shop.tripn.api.user.domain;
 import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
+@NoArgsConstructor
 @Data
 public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -29,6 +31,7 @@ public class UserDTO implements Serializable {
     private String card_company;
     private String mbti_list;
     private String regDate;
+    private String token;
 
 
 
@@ -37,7 +40,7 @@ public class UserDTO implements Serializable {
     UserDTO(long userId, String username, String password, String name,
             String first_name,String last_name, String email, String birth,
             String gender, String address, String phone_number, String passport, String mbti,
-            String card_number, String card_company, String mbti_list, String regDate) {
+            String card_number, String card_company, String mbti_list, String regDate, String token) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -55,5 +58,6 @@ public class UserDTO implements Serializable {
         this.card_company = card_company;
         this.mbti_list = mbti_list;
         this.regDate = regDate;
+        this.token = token;
     }
 }

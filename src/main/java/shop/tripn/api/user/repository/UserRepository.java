@@ -47,6 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
 //    @Query(value = "update users set mbti=:'' where userid=:''", nativeQuery = true)
-    @Query(value = "update users set mbti=:mbti where userid=:userid", nativeQuery = true)
-    void updateMbti(@Param("userid") String userid, @Param("mbti") String mbti);
+    @Query(value = "update users set mbti=:mbti where user_id=:userId", nativeQuery = true)
+    void updateMbti(@Param("userId") long userId, @Param("mbti") String mbti);
 }
