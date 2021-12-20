@@ -26,4 +26,10 @@ public class MailController {
         System.out.println(mailDto.getAddress());
         mailService.mailSend(mailDto);
     }
+
+    @PostMapping("/joinSendmail")
+    public void joinMail(@RequestBody MailDto mailDto) {
+        System.out.println(mailDto.getAddress());
+        mailService.joinMailSend(mailDto);
+    }
 }

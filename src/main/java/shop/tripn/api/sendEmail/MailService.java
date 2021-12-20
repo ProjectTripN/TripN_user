@@ -49,4 +49,24 @@ public class MailService {
         }
 
     }
+    public void joinMailSend(MailDto mailDto) {
+        int rand = (int)((Math.random()*(99999-10000+1))+10000);
+        try {
+            MailHandler mailHandler = new MailHandler(mailSender);
+
+            mailHandler.setTo(mailDto.getAddress());
+            mailHandler.setFrom(MailService.FROM_ADDRESS);
+            mailHandler.setSubject("TripN 회원가입 인증번호 안내 이메일 입니다.");
+//            userRepository.updatePassword(mailDto.getEmail(), serti);
+            mailHandler.setText("안녕하세요.\n\n TripN 회원가입 인증번호 안내 관련 이메일 입니다.\n\n"+"회원가입 인증번호는 '"
+                    +rand+"' 입니다.\n\n 인증번호 확인란에 기입해주십시오.");
+
+            mailHandler.send();
+        }
+
+        catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }
