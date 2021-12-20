@@ -22,10 +22,10 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long boardId;
 
-    @Column(length = 1000000000)  private @NotNull String question;
-    @Column(length = 1000000000)  private @NotNull String answer;
-    @Column(length = 10000) private @NotNull String category;
-    @Column(length = 10000) private @NotNull String categoryDetail;
+    @Column(columnDefinition = "LONGTEXT")  private @NotNull String question;
+    @Column(columnDefinition = "LONGTEXT")  private @NotNull String answer;
+    @Column(columnDefinition = "LONGTEXT") private @NotNull String category;
+    @Column(columnDefinition = "LONGTEXT") private @NotNull String categoryDetail;
 
 
     public Board toEntity(){
