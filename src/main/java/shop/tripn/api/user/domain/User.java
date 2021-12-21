@@ -2,6 +2,7 @@ package shop.tripn.api.user.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Proxy;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.util.List;
 
-
+@Builder
 @Data
 @Entity
 @Table(name = "users")

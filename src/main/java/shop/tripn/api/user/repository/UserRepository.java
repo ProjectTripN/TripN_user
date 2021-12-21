@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import shop.tripn.api.user.domain.User;
 
@@ -19,8 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select * from users where users.username=:username and users.password=:password", nativeQuery = true)
     Optional<User> login(@Param("username") String username, @Param("password") String password);
     boolean existsByUsername(@Param("username") String username);
-//    @Query(value = "select users.name from users where users.name=:name", nativeQuery = true)
-//    Optional<User> findByUsername(@Param("name") String name);
     @Query(value = "select * from users where users.name=:name", nativeQuery = true)
     List<User> searchByName(@Param("name") String name);
     @Query(value = "select * from users where users.phone_number=:phone_number", nativeQuery = true)
@@ -42,11 +41,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Transactional
     @Query(value = "update users set password=:password where email=:email", nativeQuery = true)
-    void updatePassword(@Param("email") String email, @Param("password") String password);
+    void forgotPassword(@Param("email") String email, @Param("password") String password);
+//    UPDATE `mariadb`.`users` SET `password`='1111' WHERE  `user_id`=6;
+    @Modifying
+    @Transactional
+    @Query(value = "update users set password=:password where username=:username", nativeQuery = true)
+    void updatePassword(@Param("username") String username, @Param("password") String password);
 
     @Modifying
     @Transactional
-//    @Query(value = "update users set mbti=:'' where userid=:''", nativeQuery = true)
     @Query(value = "update users set mbti=:mbti where user_id=:userId", nativeQuery = true)
     void updateMbti(@Param("userId") long userId, @Param("mbti") String mbti);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update users set mbti_list=:mbtiList where user_id=:userId", nativeQuery = true)
+    void updateMbtiList(@Param("userId") long userId, @Param("mbtiList") String mbtiList);
 }

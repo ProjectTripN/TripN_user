@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.tripn.api.common.CommonController;
+import shop.tripn.api.security.domain.SecurityProvider;
+import shop.tripn.api.security.domain.SecurityToken;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
@@ -27,6 +29,8 @@ public class UserController implements CommonController<User, Long> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserService userService;
     private final UserRepository userRepository;
+    private final SecurityProvider securityProvider;
+
 
 
     @PostMapping("/join")
@@ -53,10 +57,6 @@ public class UserController implements CommonController<User, Long> {
     @Override
     public ResponseEntity<Boolean> existById(Long id) { return null; }
 
-//    @GetMapping("/exist/{username}")
-//    public ResponseEntity<Boolean> exist(@PathVariable String username) {
-//        return ResponseEntity.ok(userRepository.existsByUsername(username));
-//    }
 
     @PostMapping("/login")
     @ApiOperation(value="${UserController.signin}")
@@ -64,11 +64,14 @@ public class UserController implements CommonController<User, Long> {
             @ApiResponse(code=400,message = "Something Wrong"),
             @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")
     })
-    public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user){
+    public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user, @RequestBody SecurityProvider securityProvider ){
         logger.info(String.format("로그인 정보: %s", user.toString()));
+        securityProvider.createToken(user.getUsername(),user.getRoles());
         return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()).orElse(new User()));
+//        return securityProvider.createToken(user.getUsername(),user.getRoles());
     }
-
+    /** private final JwtTokenProvider jwtTokenProvider;
+     * jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); */
     @GetMapping("/list")
     @Override
     public ResponseEntity<List<User>> findAll() {
@@ -79,7 +82,6 @@ public class UserController implements CommonController<User, Long> {
     @GetMapping()
     @Override
     public ResponseEntity<User> getById(@PathVariable Long id) {
-//        logger.info(String.format("userId 조회 :" + userRepository.getById(id)));
         return ResponseEntity.ok(userRepository.getById(id));
     }
 
@@ -113,12 +115,6 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok().body(userRepository.searchByUsername(username));
     }
 
-//    @GetMapping("/{password}")
-//    public ResponseEntity<List<User>> findByPassword(@PathVariable String password){
-//        logger.info(String.format("비밀번호 찾기 : %s", userRepository.findByPassword(password)));
-//        return ResponseEntity.ok().body(userRepository.findByBirth(password));
-//    }
-
     @GetMapping("/list/{id}")
     @Override
     public ResponseEntity<Optional<User>> findById(@PathVariable Long id) {
@@ -139,12 +135,20 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
-//    @PutMapping("/password")
-//    public ResponseEntity<User> updatePassword(@PathVariable String password){
-////        logger.info(String.format("비밀번호 변경: ", userRepository.updatePassword(password));
-////        ;return ResponseEntity.ok().body(userRepository.findByUsername(username));
-//        return ResponseEntity.ok().body(userRepository.updatePassword(password));
-//    }
+    @PutMapping("/mbtiList")
+    public ResponseEntity<User> updateMbtiList(@RequestBody User user){
+        userRepository.updateMbtiList(user.getUserId(), user.getMbti_list());
+        return ResponseEntity.ok(userRepository.getById(user.getUserId()));
+    }
+
+/**
+    @PutMapping("/updatePassword")
+    public ResponseEntity<User> updatePassword(@PathVariable String username, String password){
+        logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
+        userRepository
+        return ResponseEntity.ok(userRepository.updatePassword(username ,password));
+    }
+*/
 
     @Override
     public ResponseEntity<Long> count() {
@@ -158,15 +162,8 @@ public class UserController implements CommonController<User, Long> {
 
     @DeleteMapping("/{username}")
     public ResponseEntity<String> deleteByUsername(@PathVariable String username){
-//        logger.info(String.format("회원이름으로 지우기 : %s ", userRepository.deleteByUsername(username)));
         userRepository.deleteByUsername(username);
         return ResponseEntity.ok(username+"님의 탈퇴가 완료되었습니다");
     }
 
-
-//    @DeleteMapping("/{userId}")
-//    public ResponseEntity<String> deleteById(@PathVariable String userId){
-//        userRepository.deleteByUsername(userId);
-//        return ResponseEntity.ok(userId+"님의 탈퇴가 완료되었습니다");
-//    }
 }

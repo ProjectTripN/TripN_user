@@ -36,7 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/join").permitAll()
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/users/mbti").permitAll()
+                .antMatchers("/users/mbtiList").permitAll()
+                .antMatchers("/users/password").permitAll()
                 .antMatchers("/users/findAll").permitAll()
+                .antMatchers("/boards/save").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/login");

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Log
+//@RequiredArgsConstructor
 public class SecurityToken {
     private final String token;
     private final String key;
