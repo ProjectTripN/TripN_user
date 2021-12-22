@@ -26,7 +26,8 @@ import java.util.List;
 public class UserFileController {
     private final UserFileServiceImpl service;
 
-    @Value("${upload.path}")
+
+    @Value("${shop.upload.path}")
     private String uploadPath;
 
     /**@RequestMapping("/imgList/pages")
@@ -47,6 +48,7 @@ public class UserFileController {
         return ResponseEntity.ok(service.saveFile(files));
     }
 
+    /**
     @GetMapping("/display")
     public ResponseEntity<byte[]> getFile(String imgName) {
         ResponseEntity<byte[]> result = null;
@@ -67,7 +69,7 @@ public class UserFileController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return result;
-    }
+    }*/
 
     @PutMapping("/update_file/{reviewFileId}")
     public ResponseEntity<ArrayList<UserFileDTO>> updateFile(List<MultipartFile> files) {

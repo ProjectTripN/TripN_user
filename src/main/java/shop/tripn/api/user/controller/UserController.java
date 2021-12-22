@@ -16,6 +16,7 @@ import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
 import shop.tripn.api.user.service.UserService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,21 +58,32 @@ public class UserController implements CommonController<User, Long> {
     @Override
     public ResponseEntity<Boolean> existById(Long id) { return null; }
 
-
     @PostMapping("/login")
     @ApiOperation(value="${UserController.signin}")
     @ApiResponses(value={
             @ApiResponse(code=400,message = "Something Wrong"),
-            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")
-    })
-    public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user, @RequestBody SecurityProvider securityProvider ){
-        logger.info(String.format("로그인 정보: %s", user.toString()));
-        securityProvider.createToken(user.getUsername(),user.getRoles());
-        return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()).orElse(new User()));
-//        return securityProvider.createToken(user.getUsername(),user.getRoles());
+            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
+    public ResponseEntity<UserDTO> login(@ApiParam("Signin User") @RequestBody UserDTO userDTO)
+            throws IOException {
+        logger.info(String.valueOf(userDTO));
+        return ResponseEntity.ok(userService.login(userDTO));
     }
+    /**
+     @PostMapping("/login")
+     @ApiOperation(value="${UserController.login}")
+     @ApiResponses(value={
+     @ApiResponse(code=400,message = "Something Wrong"),
+     @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
+         public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user, @RequestBody SecurityProvider securityProvider )
+            throws IOException {
+            logger.info(String.format("로그인 정보: %s", user.toString()));
+            securityProvider.createToken(user.getUsername(),user.getRoles());
+            return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()).orElse(new User()));
+     }     */
+
     /** private final JwtTokenProvider jwtTokenProvider;
      * jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); */
+
     @GetMapping("/list")
     @Override
     public ResponseEntity<List<User>> findAll() {

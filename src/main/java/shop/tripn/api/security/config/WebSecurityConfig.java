@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/password").permitAll()
                 .antMatchers("/users/findAll").permitAll()
                 .antMatchers("/boards/save").permitAll()
+                .antMatchers("/user_files/uploadAjax").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest().authenticated();
         http.exceptionHandling().accessDeniedPage("/login");

@@ -13,7 +13,7 @@ import java.util.Optional;
 @Component
 public interface UserService {
     Optional<User> findById(long userId);
-    Optional<User> login(String username, String password);
+//    Optional<User> login(String username, String password);
     List<User> searchByName(String username);
     UserDTO login(UserDTO userDTO);
     default Map<String, Object> dtoToEntity(UserDTO userDTO){

@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService{
         return userRepository.findById(userid);
     }
 
+    /**
     @Override
     public Optional<User> login(String username, String password) {
         return Optional.empty();
-    }
-
+    }*/
 
     @Override
     public UserDTO login(UserDTO userDTO) {
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService{
             return entityDto;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new SecurityRuntimeException("Invalid Artist-Username / Password supplied",
+            throw new SecurityRuntimeException("Invalid User-Username / Password supplied",
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
 //        return userRepository.login(username,password);
