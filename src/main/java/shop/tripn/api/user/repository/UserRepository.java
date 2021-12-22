@@ -42,11 +42,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "update users set password=:password where email=:email", nativeQuery = true)
     void forgotPassword(@Param("email") String email, @Param("password") String password);
-//    UPDATE `mariadb`.`users` SET `password`='1111' WHERE  `user_id`=6;
+
     @Modifying
     @Transactional
-    @Query(value = "update users set password=:password where username=:username", nativeQuery = true)
-    void updatePassword(@Param("username") String username, @Param("password") String password);
+    @Query(value = "update users set password=:password where user_id=:userId", nativeQuery = true)
+    void updatePassword(@Param("userId") long userId, @Param("password") String password);
 
     @Modifying
     @Transactional

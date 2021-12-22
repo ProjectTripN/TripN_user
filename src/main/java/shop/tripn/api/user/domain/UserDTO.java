@@ -32,6 +32,7 @@ public class UserDTO implements Serializable {
     private String mbti_list;
     private String regDate;
     private String token;
+    private String message;
 
 
 

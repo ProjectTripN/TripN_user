@@ -65,8 +65,11 @@ public class UserController implements CommonController<User, Long> {
             @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
     public ResponseEntity<UserDTO> login(@ApiParam("Signin User") @RequestBody UserDTO userDTO)
             throws IOException {
-        logger.info(String.valueOf(userDTO));
-        return ResponseEntity.ok(userService.login(userDTO));
+        logger.info("로그인에서 들어온 user값"+userDTO.toString());
+        UserDTO entityDto = userService.login(userDTO);
+        logger.info("로그인결과 : "+entityDto.getMessage());
+        logger.info("token 값: "+ entityDto.getToken());
+        return ResponseEntity.ok(entityDto);
     }
     /**
      @PostMapping("/login")
@@ -153,14 +156,18 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
+    @PutMapping("/updatePassword")
+    public ResponseEntity<User> updatePassword(@RequestBody User user){
+        userRepository.updatePassword(user.getUserId(), user.getPassword());
+        return ResponseEntity.ok(userRepository.getById(user.getUserId()));
+    }
 /**
     @PutMapping("/updatePassword")
     public ResponseEntity<User> updatePassword(@PathVariable String username, String password){
         logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
-        userRepository
-        return ResponseEntity.ok(userRepository.updatePassword(username ,password));
-    }
-*/
+        userRepository.updatePassword(username, password);
+        return ResponseEntity.ok(userRepository.(username, password));
+    }*/
 
     @Override
     public ResponseEntity<Long> count() {
