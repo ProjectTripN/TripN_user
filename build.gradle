@@ -22,7 +22,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -45,8 +44,6 @@ dependencies {
 			'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-//	compile group: 'com.sun.mail', name: 'javax.mail', version: '1.4.7'
-//	compile group: 'org.springframework', name: 'spring-context-support', version: '5.2.6.RELEASE'
 	implementation 'commons-io:commons-io:2.6'
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 	implementation 'com.querydsl:querydsl-jpa'
