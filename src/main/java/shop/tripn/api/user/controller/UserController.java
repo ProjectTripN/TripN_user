@@ -71,21 +71,6 @@ public class UserController implements CommonController<User, Long> {
         logger.info("token 값: "+ entityDto.getToken());
         return ResponseEntity.ok(entityDto);
     }
-    /**
-     @PostMapping("/login")
-     @ApiOperation(value="${UserController.login}")
-     @ApiResponses(value={
-     @ApiResponse(code=400,message = "Something Wrong"),
-     @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
-         public ResponseEntity<User> login(@ApiParam("Signin User") @RequestBody User user, @RequestBody SecurityProvider securityProvider )
-            throws IOException {
-            logger.info(String.format("로그인 정보: %s", user.toString()));
-            securityProvider.createToken(user.getUsername(),user.getRoles());
-            return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()).orElse(new User()));
-     }     */
-
-    /** private final JwtTokenProvider jwtTokenProvider;
-     * jwtTokenProvider.createToken(member.getUsername(), member.getRoles()); */
 
     @GetMapping("/list")
     @Override
@@ -161,13 +146,6 @@ public class UserController implements CommonController<User, Long> {
         userRepository.updatePassword(user.getUserId(), user.getPassword());
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
-/**
-    @PutMapping("/updatePassword")
-    public ResponseEntity<User> updatePassword(@PathVariable String username, String password){
-        logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
-        userRepository.updatePassword(username, password);
-        return ResponseEntity.ok(userRepository.(username, password));
-    }*/
 
     @Override
     public ResponseEntity<Long> count() {

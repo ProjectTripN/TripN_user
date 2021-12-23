@@ -39,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/mbtiList").permitAll()
                 .antMatchers("/users/updatePassword").permitAll()
                 .antMatchers("/existsById/{username}").permitAll()
+                .antMatchers("/mail/sendmail").permitAll()
                 .antMatchers("/users/findAll").permitAll()
                 .antMatchers("/boards/save").permitAll()
                 .antMatchers("/user_files/uploadAjax").permitAll()
