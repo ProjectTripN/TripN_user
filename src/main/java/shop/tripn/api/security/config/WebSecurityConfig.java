@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/existsById/{username}").permitAll()
                 .antMatchers("/mail/sendmail").permitAll()
                 .antMatchers("/users/findAll").permitAll()
+                .antMatchers("/users/list").permitAll()
                 .antMatchers("/boards/save").permitAll()
                 .antMatchers("/user_files/uploadAjax").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()

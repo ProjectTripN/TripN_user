@@ -13,7 +13,7 @@ public class MailService {
     private UserRepository userRepository;
 
     private JavaMailSender mailSender;
-    private static final String FROM_ADDRESS = "yjyoon2107@gmail.com";
+    private static final String FROM_ADDRESS = "protripn@gmail.com";
 
     public String getTempPassword(){
         char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
