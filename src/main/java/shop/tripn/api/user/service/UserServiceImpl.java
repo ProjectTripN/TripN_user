@@ -12,6 +12,7 @@ import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +28,6 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findById(long userid) {
         return userRepository.findById(userid);
     }
-
-    /**
-    @Override
-    public Optional<User> login(String username, String password) {
-        return Optional.empty();
-    }*/
 
     @Override
     public UserDTO login(UserDTO userDTO) {
@@ -57,6 +52,40 @@ public class UserServiceImpl implements UserService{
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
+    @Override
+    public Optional<List<User>> searchOption2(String op1, String op2) {
+        List<String> arr = new ArrayList<>();
+        arr.add(op1);
+        arr.add(op2);
+        List<User> ulist = new ArrayList<User>();
+        for(int i=0; i < arr.size(); i++){
+            List<User> names = userRepository.searchByUsername(arr.get(i));
+            List<User> birthList = userRepository.searchByBirth(arr.get(i));
+            List<User> phoneNumber = userRepository.searchByPhoneNumber(arr.get(i));
+
+            if(names.size() == 0 && birthList.size() == 0 && phoneNumber.size() == 0){
+                return Optional.empty();
+            }else if(names.size() == 0 && birthList.size() == 0){
+                return Optional.empty();
+            }else if(names.size() == 0 && phoneNumber.size() == 0){
+                return Optional.empty();
+            }else if(phoneNumber.size() == 0 && birthList.size() == 0){
+                return Optional.empty();
+            }else{
+                ulist = userRepository.searchByPhoneNumber(arr.get(i));
+                // ulist = userRepository.searchByUsername("");
+                // ulist = userRepository.searchByBirth("");
+                break;
+
+
+            }
+        }
+
+
+        return Optional.of(ulist);
+    }
+
     @Override
     public List<User> searchByName(String username) {
         return userRepository.searchByName(username);

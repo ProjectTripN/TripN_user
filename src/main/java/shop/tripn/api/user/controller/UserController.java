@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import shop.tripn.api.board.domain.Board;
 import shop.tripn.api.common.CommonController;
 import shop.tripn.api.security.domain.SecurityProvider;
 import shop.tripn.api.security.domain.SecurityToken;
@@ -91,29 +92,71 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok().body(userRepository.searchByName(name));
     }
 
-    @GetMapping("/phoneNumber/{phone_number}")
+    @GetMapping("/userList/phoneNumber/{phone_number}")
     public ResponseEntity<List<User>> searchByPhoneNumber(@PathVariable String phone_number){
         logger.info(String.format("휴대폰번호로 찾기 : %s", userRepository.searchByPhoneNumber(phone_number)));
         return ResponseEntity.ok().body(userRepository.searchByPhoneNumber(phone_number));
     }
 
-    @GetMapping("/birth/{birth}")
+    @GetMapping("/userList/birth/{birth}")
     public ResponseEntity<List<User>> searchByBirth(@PathVariable String birth){
         logger.info(String.format("생년월일로 찾기 : %s", userRepository.searchByBirth(birth)));
         return ResponseEntity.ok().body(userRepository.searchByBirth(birth));
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<List<User>> findByPassword(@PathVariable String email){
-        logger.info(String.format("이메일로 찾기 : %s", userRepository.findByPassword(email)));
-        return ResponseEntity.ok().body(userRepository.findByPassword(email));
+    @GetMapping("/userList/email/{email}")
+    public ResponseEntity<User> searchByEmail(@PathVariable String email){
+        logger.info(String.format("이메일로 찾기 : %s", userRepository.searchByEmail(email)));
+        return ResponseEntity.ok().body(userRepository.searchByEmail(email));
     }
 
-    @GetMapping("/username/{username}")
+    @GetMapping("/userList/username/{username}}")
     public ResponseEntity<List<User>> searchByUsername(@PathVariable String username){
         logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
         return ResponseEntity.ok().body(userRepository.searchByUsername(username));
     }
+
+    @GetMapping("/userList/{username}/{birth}/{phone_number}")
+    public ResponseEntity<List<User>> searchByUserList(
+            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
+        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
+    }
+
+    @GetMapping("/userList/option1/{option1}/option2/{option2}")
+    public ResponseEntity<List<User>> searchByUserListBirth(
+            @PathVariable String option1, @PathVariable String option2){
+        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(option1, option2));
+    }
+    /**
+    @GetMapping("/userList/{username}/{birth}")
+    public ResponseEntity<List<User>> searchByUserListName(
+            @PathVariable String username, @PathVariable String birth){
+        return ResponseEntity.ok().body(userRepository.searchByUserListName(username, birth));
+    }
+
+    @GetMapping("/userList/{username}/{phone_number}")
+    public ResponseEntity<List<User>> searchByUserListBirth(
+            @PathVariable String birth, @PathVariable String phone_number){
+        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(birth, phone_number));
+    }
+
+    @GetMapping("/userList/{birth}/{username}")
+    public ResponseEntity<List<User>> searchByUserList(
+            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
+        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
+    }
+
+    @GetMapping("/users/userList/{phone_number}/{username}")
+    public ResponseEntity<List<User>> searchByUserList(
+            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
+        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
+    }
+
+    @GetMapping("//users/userList/{phone_number}/{birth}")
+    public ResponseEntity<List<User>> searchByUserList(
+            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
+        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
+    }*/
 
     @GetMapping("/list/{id}")
     @Override

@@ -52,4 +52,5 @@ public interface UserService {
                 .regDate(user.getRegDate()).build();
         return entityDto;
     }
+    Optional<List<User>> searchOption2(String op1, String op2);
 }
