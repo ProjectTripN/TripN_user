@@ -122,11 +122,11 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
     }
 
-    @GetMapping("/userList/option1/{option1}/option2/{option2}")
-    public ResponseEntity<List<User>> searchByUserListBirth(
-            @PathVariable String option1, @PathVariable String option2){
-        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(option1, option2));
-    }
+//    @GetMapping("/userList/option1/{option1}/option2/{option2}")
+//    public ResponseEntity<List<User>> searchByUserListBirth(
+//            @PathVariable String option1, @PathVariable String option2){
+//        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(option1, option2));
+//    }
     /**
     @GetMapping("/userList/{username}/{birth}")
     public ResponseEntity<List<User>> searchByUserListName(
