@@ -1,17 +1,13 @@
 package shop.tripn.api.user.controller;
 
 import io.swagger.annotations.*;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import shop.tripn.api.board.domain.Board;
 import shop.tripn.api.common.CommonController;
 import shop.tripn.api.security.domain.SecurityProvider;
-import shop.tripn.api.security.domain.SecurityToken;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
@@ -50,8 +46,8 @@ public class UserController implements CommonController<User, Long> {
     }
 
     @GetMapping("/existsById/{username}")
-    public ResponseEntity<Boolean> existById(@PathVariable String username) {
-        boolean b = userRepository.existsByUsername(username);
+    public ResponseEntity<Boolean> existById(@PathVariable String userName) {
+        boolean b = userRepository.existsByUserName(userName);
         logger.info(String.format("아이디 존재 여부 :" + b));
         return ResponseEntity.ok(b);
     }
@@ -93,9 +89,9 @@ public class UserController implements CommonController<User, Long> {
     }
 
     @GetMapping("/userList/phoneNumber/{phone_number}")
-    public ResponseEntity<List<User>> searchByPhoneNumber(@PathVariable String phone_number){
-        logger.info(String.format("휴대폰번호로 찾기 : %s", userRepository.searchByPhoneNumber(phone_number)));
-        return ResponseEntity.ok().body(userRepository.searchByPhoneNumber(phone_number));
+    public ResponseEntity<List<User>> searchByPhoneNumber(@PathVariable String phoneNumber){
+        logger.info(String.format("휴대폰번호로 찾기 : %s", userRepository.searchByPhoneNumber(phoneNumber)));
+        return ResponseEntity.ok().body(userRepository.searchByPhoneNumber(phoneNumber));
     }
 
     @GetMapping("/userList/birth/{birth}")
@@ -111,52 +107,16 @@ public class UserController implements CommonController<User, Long> {
     }
 
     @GetMapping("/userList/username/{username}}")
-    public ResponseEntity<List<User>> searchByUsername(@PathVariable String username){
-        logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUsername(username)));
-        return ResponseEntity.ok().body(userRepository.searchByUsername(username));
+    public ResponseEntity<List<User>> searchByUserName(@PathVariable String userName){
+        logger.info(String.format("Username 으로 찾기 : %s", userRepository.searchByUserName(userName)));
+        return ResponseEntity.ok().body(userRepository.searchByUserName(userName));
     }
 
-    @GetMapping("/userList/{username}/{birth}/{phone_number}")
-    public ResponseEntity<List<User>> searchByUserList(
-            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
-        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
+    @PostMapping("/userSearch")
+    public ResponseEntity <Optional<List<User>>> searchByUserList(
+            @RequestBody UserDTO u ){
+        return ResponseEntity.ok(userService.searchOption(u));
     }
-
-//    @GetMapping("/userList/option1/{option1}/option2/{option2}")
-//    public ResponseEntity<List<User>> searchByUserListBirth(
-//            @PathVariable String option1, @PathVariable String option2){
-//        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(option1, option2));
-//    }
-    /**
-    @GetMapping("/userList/{username}/{birth}")
-    public ResponseEntity<List<User>> searchByUserListName(
-            @PathVariable String username, @PathVariable String birth){
-        return ResponseEntity.ok().body(userRepository.searchByUserListName(username, birth));
-    }
-
-    @GetMapping("/userList/{username}/{phone_number}")
-    public ResponseEntity<List<User>> searchByUserListBirth(
-            @PathVariable String birth, @PathVariable String phone_number){
-        return ResponseEntity.ok().body(userRepository.searchByUserListBirth(birth, phone_number));
-    }
-
-    @GetMapping("/userList/{birth}/{username}")
-    public ResponseEntity<List<User>> searchByUserList(
-            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
-        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
-    }
-
-    @GetMapping("/users/userList/{phone_number}/{username}")
-    public ResponseEntity<List<User>> searchByUserList(
-            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
-        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
-    }
-
-    @GetMapping("//users/userList/{phone_number}/{birth}")
-    public ResponseEntity<List<User>> searchByUserList(
-            @PathVariable String username, @PathVariable String birth, @PathVariable String phone_number){
-        return ResponseEntity.ok().body(userRepository.searchByUserList(username, birth, phone_number));
-    }*/
 
     @GetMapping("/list/{id}")
     @Override
@@ -172,15 +132,21 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
-    @PutMapping("/mbti")
+    @PutMapping("/mbti/mbti")
     public ResponseEntity<User> updateMbti(@RequestBody User user){
         userRepository.updateMbti(user.getUserId(), user.getMbti());
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
-    @PutMapping("/mbtiList")
+    @PutMapping("/mbti/mbtiList")
     public ResponseEntity<User> updateMbtiList(@RequestBody User user){
-        userRepository.updateMbtiList(user.getUserId(), user.getMbti_list());
+        userRepository.updateMbtiList(user.getUserId(), user.getMbtiList());
+        return ResponseEntity.ok(userRepository.getById(user.getUserId()));
+    }
+
+    @PutMapping("/mbti")
+    public ResponseEntity<User> updateMbti2(@RequestBody User user){
+        userRepository.updateMbti2(user.getUserId(), user.getMbti(), user.getMbtiList());
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
@@ -190,9 +156,10 @@ public class UserController implements CommonController<User, Long> {
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
+    @GetMapping("/count")
     @Override
-    public ResponseEntity<Long> count() {
-        return null;
+    public ResponseEntity <Long> count(){
+        return ResponseEntity.ok(userRepository.count());
     }
 
     @Override
@@ -201,9 +168,9 @@ public class UserController implements CommonController<User, Long> {
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteByUsername(@PathVariable String username){
-        userRepository.deleteByUsername(username);
-        return ResponseEntity.ok(username+"님의 탈퇴가 완료되었습니다");
+    public ResponseEntity<String> deleteByUserName(@PathVariable String userName){
+        userRepository.deleteByUserName(userName);
+        return ResponseEntity.ok(userName+"님의 탈퇴가 완료되었습니다");
     }
 
 }

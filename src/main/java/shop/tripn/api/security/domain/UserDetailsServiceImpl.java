@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = Optional.ofNullable(repository.findByUsername(username))
+        Optional<User> user = Optional.ofNullable(repository.findByUserName(username))
                 .orElseThrow(() -> new UsernameNotFoundException(username+ "에 해당하는 객체가 존재하지 않습니다."));
         return UserDetailsImpl.build(user.get());
     }

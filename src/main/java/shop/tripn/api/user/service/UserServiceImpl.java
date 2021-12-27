@@ -33,12 +33,12 @@ public class UserServiceImpl implements UserService{
     public UserDTO login(UserDTO userDTO) {
         logger.info("로그인에서 들어온 user값"+userDTO.toString());
         try {
-            Optional<User> userLogin = userRepository.login(userDTO.getUsername(), userDTO.getPassword()); //login 정보 담기
+            Optional<User> userLogin = userRepository.login(userDTO.getUserName(), userDTO.getPassword()); //login 정보 담기
             UserDTO entityDto = new UserDTO(); //
             if(userLogin != null){
               entityDto = entityDto(userLogin.get()); //userlogin.get(): optional을 풀어줌
-              String Token = provider.createToken(entityDto.getUsername(), //token 생성
-                userRepository.findByUsername(entityDto.getUsername()).get().getRoles());
+              String Token = provider.createToken(entityDto.getUserName(), //token 생성
+                userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
                 entityDto.setToken(Token);//token을 담아줌
                 entityDto.setMessage("LOGIN SUCCESS");
                 return entityDto;
@@ -53,36 +53,32 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
     @Override
-    public Optional<List<User>> searchOption2(String op1, String op2) {
-        List<String> arr = new ArrayList<>();
-        arr.add(op1);
-        arr.add(op2);
+    public Optional<List<User>> searchOption(UserDTO userDTO) {
+        String Name = userDTO.getName();
+        String birth = userDTO.getBirth();
+        String phoneNumber = userDTO.getPhoneNumber();
         List<User> ulist = new ArrayList<User>();
-        for(int i=0; i < arr.size(); i++){
-            List<User> names = userRepository.searchByUsername(arr.get(i));
-            List<User> birthList = userRepository.searchByBirth(arr.get(i));
-            List<User> phoneNumber = userRepository.searchByPhoneNumber(arr.get(i));
-
-            if(names.size() == 0 && birthList.size() == 0 && phoneNumber.size() == 0){
-                return Optional.empty();
-            }else if(names.size() == 0 && birthList.size() == 0){
-                return Optional.empty();
-            }else if(names.size() == 0 && phoneNumber.size() == 0){
-                return Optional.empty();
-            }else if(phoneNumber.size() == 0 && birthList.size() == 0){
-                return Optional.empty();
-            }else{
-                ulist = userRepository.searchByPhoneNumber(arr.get(i));
-                // ulist = userRepository.searchByUsername("");
-                // ulist = userRepository.searchByBirth("");
-                break;
-
-
-            }
+        if (!Name.equals("NONE") && !birth.equals("NONE") && !phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByUserList(Name, birth, phoneNumber);
+        }else if(Name.equals("NONE") && !birth.equals("NONE") && !phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByBirthPhone(birth, phoneNumber);
+        }else if(!Name.equals("NONE") && birth.equals("NONE") && !phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByUserPhone(Name, phoneNumber);
+        }else if(!Name.equals("NONE") && !birth.equals("NONE") && phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByUserBirth(Name,birth);
+        }else if(!Name.equals("NONE") && birth.equals("NONE") && phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByUserName(Name);
+        }else if (Name.equals("NONE") && !birth.equals("NONE") && phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByBirth(birth);
+        }else if (Name.equals("NONE") && birth.equals("NONE") && !phoneNumber.equals("NONE")){
+            ulist = userRepository.searchByPhoneNumber(phoneNumber);
+        }else if (Name.equals("NONE") && birth.equals("NONE") && phoneNumber.equals("NONE")){
+            ulist = userRepository.findAll();
+        }else{
+            System.out.println("해당사항 없음");
         }
-
-
         return Optional.of(ulist);
     }
 

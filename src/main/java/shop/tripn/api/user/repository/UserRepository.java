@@ -18,36 +18,30 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
-    @Query(value = "select * from users where users.username=:username and users.password=:password", nativeQuery = true)
-    Optional<User> login(@Param("username") String username, @Param("password") String password);
-    boolean existsByUsername(@Param("username") String username);
-    @Query(value = "select * from users where users.name=:name", nativeQuery = true)
+    @Query(value = "select * from users where users.userName=:userName and users.password=:password", nativeQuery = true)
+    Optional<User> login(@Param("userName") String userName, @Param("password") String password);
+    boolean existsByUserName(@Param("userName") String userName);
+    @Query(value = "select * from users where name=:name", nativeQuery = true)
     List<User> searchByName(@Param("name") String name);
-    @Query(value = "select * from users where users.phone_number=:phone_number", nativeQuery = true)
-    List<User> searchByPhoneNumber(@Param("phone_number") String phone_number);
-    @Query(value = "select * from users where users.birth=:birth", nativeQuery = true)
+    @Query(value = "select * from users where phone_number=:phoneNumber", nativeQuery = true)
+    List<User> searchByPhoneNumber(@Param("phoneNumber") String phoneNumber);
+    @Query(value = "select * from users where birth=:birth", nativeQuery = true)
     List<User> searchByBirth(@Param("birth") String birth);
-    @Query(value = "select * from users where users.email=:email", nativeQuery = true)
+    @Query(value = "select * from users where email=:email", nativeQuery = true)
     User searchByEmail(@Param("email") String email);
-    @Query(value = "select * from users where users.username=:username", nativeQuery = true)
-    List<User> searchByUsername(@Param("username") String username);
-    @Query(value = "select * from users where users.username=:username and users.birth=:birth and users.phone_number=:phone_number", nativeQuery = true)
-    List<User> searchByUserList(@Param("username") String username, @Param("birth") String birth, @Param("phone_number") String phone_number);
-    @Query(value = "select * from users where users.phone_number=:phone_number and users.username=:username ", nativeQuery = true)
-    List<User> searchByUserListPhone(@Param("phone_number") String phone_number, @Param("username") String username);
-
-//    @Query(value = "select * from users where users.birth=:birth and users.phone_number=:phone_number", nativeQuery = true)
-//    List<User> searchByUserListBirth(@Param("birth") String birth, @Param("phone_number") String phone_number);
-//    @Query(value = "select * from users where users.username=:username and users.birth=:birth ", nativeQuery = true)
-//    List<User> searchByUserListName(@Param("username") String username, @Param("birth") String birth);
-//    @Query(value = "select * from users where users.password=:password", nativeQuery = true)
-//    List<User> searchByPassword(@Param("password") String password);
-//    @Query(value = "select * from users where users.username=:username LIKE %:keyword% OR users.birth=:birth LIKE %:keyword% OR users.phone_number=:phone_number LIKE %:keyword% ", nativeQuery = true)
-//    List<Board> findKeywordSearch(String keyword);
-
-    Optional<User> findByUsername(String username);
+    @Query(value = "select * from users where user_name=:userName", nativeQuery = true)
+    List<User> searchByUserName(@Param("userName") String userName);
+    @Query(value = "select * from users where name=:name and birth=:birth and phone_number=:phoneNumber", nativeQuery = true)
+    List<User> searchByUserList(@Param("name") String name, @Param("birth") String birth, @Param("phoneNumber") String phoneNumber);
+    @Query(value = "select * from users where name=:name and birth=:birth", nativeQuery = true)
+    List<User> searchByUserBirth(@Param("name") String name, @Param("birth") String birth);
+    @Query(value = "select * from users where name=:name and phone_number=:phoneNumber", nativeQuery = true)
+    List<User> searchByUserPhone(@Param("name") String name, @Param("phoneNumber") String phoneNumber);
+    @Query(value = "select * from users where birth=:birth and phone_number=:phoneNumber", nativeQuery = true)
+    List<User> searchByBirthPhone(@Param("birth") String birth, @Param("phoneNumber") String phoneNumber);
+    Optional<User> findByUserName(String userName);
     @Transactional
-    String deleteByUsername(@Param("username") String username);
+    String deleteByUserName(@Param("userName") String userName);
 
     @Modifying
     @Transactional
@@ -68,4 +62,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Transactional
     @Query(value = "update users set mbti_list=:mbtiList where user_id=:userId", nativeQuery = true)
     void updateMbtiList(@Param("userId") long userId, @Param("mbtiList") String mbtiList);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update users set mbti=:mbti, mbti_list=:mbtiList where user_id=:userId", nativeQuery = true)
+    void updateMbti2(@Param("userId") long userId, @Param("mbtiList") String mbtiList, @Param("mbti") String mbti);
+
+    @Query(value = "SELECT COUNT(*) count FROM users", nativeQuery = true)
+    long count();
+
 }

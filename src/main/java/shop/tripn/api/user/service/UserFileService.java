@@ -58,30 +58,30 @@ public interface UserFileService {
     }
 
     default User dtoEntity(UserDTO userDTO){
-        User entity = User.builder().userId(userDTO.getUserId()).username(userDTO.getUsername()).password(userDTO.getPassword())
-                .name(userDTO.getName()).first_name(userDTO.getFirst_name()).last_name(userDTO.getLast_name()).address(userDTO.getAddress())
+        User entity = User.builder().userId(userDTO.getUserId()).userName(userDTO.getUserName()).password(userDTO.getPassword())
+                .name(userDTO.getName()).firstName(userDTO.getFirstName()).lastName(userDTO.getLastName()).address(userDTO.getAddress())
                 .birth(userDTO.getBirth()).email(userDTO.getEmail()).gender(userDTO.getGender()).mbti(userDTO.getMbti())
-                .mbti_list(userDTO.getMbti_list()).passport(userDTO.getPassport()).card_company(userDTO.getCard_company())
-                .card_number(userDTO.getCard_number()).regDate(userDTO.getRegDate()).phone_number(userDTO.getPhone_number()).build();
+                .mbtiList(userDTO.getMbtiList()).passport(userDTO.getPassport()).cardCompany(userDTO.getCardCompany())
+                .cardNumber(userDTO.getCardNumber()).regDate(userDTO.getRegDate()).phoneNumber(userDTO.getPhoneNumber()).build();
         return entity;
     }
 
     default UserDTO entityDto(User user){
-        UserDTO entityDto = UserDTO.builder().userId(user.getUserId()).username(user.getUsername()).first_name(user.getFirst_name())
-                .last_name(user.getLast_name()).gender(user.getGender()).phone_number(user.getPhone_number())
+        UserDTO entityDto = UserDTO.builder().userId(user.getUserId()).userName(user.getUserName()).firstName(user.getFirstName())
+                .lastName(user.getLastName()).gender(user.getGender()).phoneNumber(user.getPhoneNumber())
                 .password(user.getPassword()).name(user.getName()).email(user.getEmail())
-                .birth(user.getBirth()).address(user.getAddress()).card_number(user.getCard_number())
-                .card_company(user.getCard_company()).mbti(user.getMbti()).mbti_list(user.getMbti_list())
+                .birth(user.getBirth()).address(user.getAddress()).cardNumber(user.getCardNumber())
+                .cardCompany(user.getCardCompany()).mbti(user.getMbti()).mbtiList(user.getMbtiList())
                 .regDate(user.getRegDate()).build();
         return entityDto;
     }
 
     default UserDTO entityDto2(User user){
-        UserDTO entityDto = UserDTO.builder().userId(user.getUserId()).username(user.getUsername()).first_name(user.getFirst_name())
-                .last_name(user.getLast_name()).gender(user.getGender()).phone_number(user.getPhone_number())
+        UserDTO entityDto = UserDTO.builder().userId(user.getUserId()).userName(user.getUserName()).firstName(user.getFirstName())
+                .lastName(user.getLastName()).gender(user.getGender()).phoneNumber(user.getPhoneNumber())
                 .password(user.getPassword()).name(user.getName()).email(user.getEmail())
-                .birth(user.getBirth()).address(user.getAddress()).card_number(user.getCard_number())
-                .card_company(user.getCard_company()).mbti(user.getMbti()).mbti_list(user.getMbti_list())
+                .birth(user.getBirth()).address(user.getAddress()).cardNumber(user.getCardNumber())
+                .cardCompany(user.getCardCompany()).mbti(user.getMbti()).mbtiList(user.getMbtiList())
                 .regDate(user.getRegDate()).build();
         return entityDto;
     }

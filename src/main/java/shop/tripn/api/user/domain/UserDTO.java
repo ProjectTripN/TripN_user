@@ -15,21 +15,21 @@ public class UserDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long userId;
-    private String username;
+    private String userName;
     private String password;
     private String name;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String birth;
     private String gender;
     private String address;
-    @Pattern(regexp = "(01[016789])(\\d{3,4})(\\d{4})}") private String phone_number;
+    @Pattern(regexp = "(01[016789])(\\d{3,4})(\\d{4})}") private String phoneNumber;
     private String passport;
     private String mbti;
-    private String card_number;
-    private String card_company;
-    private String mbti_list;
+    private String cardNumber;
+    private String cardCompany;
+    private String mbtiList;
     private String regDate;
     private String token;
     private String message;
@@ -38,26 +38,26 @@ public class UserDTO implements Serializable {
 
 
     @Builder
-    UserDTO(long userId, String username, String password, String name,
-            String first_name,String last_name, String email, String birth,
-            String gender, String address, String phone_number, String passport, String mbti,
-            String card_number, String card_company, String mbti_list, String regDate, String token) {
+    UserDTO(long userId, String userName, String password, String name,
+            String firstName,String lastName, String email, String birth,
+            String gender, String address, String phoneNumber, String passport, String mbti,
+            String cardNumber, String cardCompany, String mbtiList, String regDate, String token) {
         this.userId = userId;
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.name = name;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.birth = birth;
         this.gender = gender;
         this.address = address;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.passport = passport;
         this.mbti = mbti;
-        this.card_number = card_number;
-        this.card_company = card_company;
-        this.mbti_list = mbti_list;
+        this.cardNumber = cardNumber;
+        this.cardCompany = cardCompany;
+        this.mbtiList = mbtiList;
         this.regDate = regDate;
         this.token = token;
     }
