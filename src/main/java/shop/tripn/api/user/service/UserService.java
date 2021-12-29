@@ -15,6 +15,8 @@ public interface UserService {
     Optional<User> findById(long userId);
 //    Optional<User> login(String username, String password);
     List<User> searchByName(String username);
+//    UserDTO join(UserDTO userDTO);
+    Map<String, String> join(UserDTO userDTO);
     UserDTO login(UserDTO userDTO);
     default Map<String, Object> dtoToEntity(UserDTO userDTO){
         Map<String, Object> entityMap = new HashMap<>();

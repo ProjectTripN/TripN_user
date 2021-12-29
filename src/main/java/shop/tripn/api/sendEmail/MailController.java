@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class MailController {
     private final MailService mailService;
 
+    @Value("")
+    private String from;
+    @GetMapping("/sendmail")
+    public String dispMail() {
+        return "mail";
+    }
 
     @PostMapping("/sendmail")
     public void execMail(@RequestBody MailDto mailDto) {

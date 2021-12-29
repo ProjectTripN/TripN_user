@@ -30,11 +30,6 @@ public class UserFileController {
     @Value("${shop.upload.path}")
     private String uploadPath;
 
-    /**@RequestMapping("/imgList/pages")
-    public ResponseEntity<PageResultDto<ArtistDto, Object[]>> list(PageRequestDto page) {
-
-        return new ResponseEntity(service.getPageFileList(page), HttpStatus.OK);
-    }*/
 
     @PostMapping("/uploadAjax")
     public ResponseEntity<List<UserFileDTO>> uploadFile(List<MultipartFile> files) {
@@ -47,29 +42,6 @@ public class UserFileController {
         }
         return ResponseEntity.ok(service.saveFile(files));
     }
-
-    /**
-    @GetMapping("/display")
-    public ResponseEntity<byte[]> getFile(String imgName) {
-        ResponseEntity<byte[]> result = null;
-
-        try {
-            String srcFileName = URLDecoder.decode(imgName, "UTF-8");
-
-            File file = new File(uploadPath + File.separator + srcFileName);
-
-            HttpHeaders header = new HttpHeaders();
-
-            // MIME타입 처리
-            header.add("Content-Type", Files.probeContentType(file.toPath()));
-            // 파일 데이터 처리
-            result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return result;
-    }*/
 
     @PutMapping("/update_file/{reviewFileId}")
     public ResponseEntity<ArrayList<UserFileDTO>> updateFile(List<MultipartFile> files) {

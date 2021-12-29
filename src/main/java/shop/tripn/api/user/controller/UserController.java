@@ -4,6 +4,7 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.tripn.api.common.CommonController;
@@ -14,7 +15,9 @@ import shop.tripn.api.user.repository.UserRepository;
 import shop.tripn.api.user.service.UserService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -27,9 +30,6 @@ public class UserController implements CommonController<User, Long> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserService userService;
     private final UserRepository userRepository;
-    private final SecurityProvider securityProvider;
-
-
 
     @PostMapping("/join")
     @ApiOperation(value="${UserController.signup}")
@@ -38,11 +38,15 @@ public class UserController implements CommonController<User, Long> {
             @ApiResponse(code=403,message = "승인거절"),
             @ApiResponse(code=422,message = "중복된 ID"),
     })
-    public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
-        logger.info(String.format("회원가입 정보: %s", user.toString()));
-        User u = user.toEntity();
-        userRepository.save(u);
-        return ResponseEntity.ok(user.getName()+"님의 회원가입을 축하드립니다.");
+    public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
+        logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
+//        System.out.println("encodePassword: "+userDTO.getPassword());
+        Map<String, String> m = userService.join(userDTO);
+//        System.out.println("???"+m);
+//        userRepository.save();
+//        Map<String, String> resultMap = new HashMap<>();
+//        return new ResponseEntity(userService.join(user), HttpStatus.OK);
+        return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
     }
 
     @GetMapping("/existsById/{username}")
@@ -66,8 +70,10 @@ public class UserController implements CommonController<User, Long> {
         UserDTO entityDto = userService.login(userDTO);
         logger.info("로그인결과 : "+entityDto.getMessage());
         logger.info("token 값: "+ entityDto.getToken());
+//        return ResponseEntity.ok(entityDto);
         return ResponseEntity.ok(entityDto);
     }
+
 
     @GetMapping("/list")
     @Override
@@ -81,6 +87,8 @@ public class UserController implements CommonController<User, Long> {
     public ResponseEntity<User> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userRepository.getById(id));
     }
+
+
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<User>> searchByName(@PathVariable String name) {

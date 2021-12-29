@@ -25,7 +25,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
     @Column(length = 50) private @NotNull String userName;
-    @Column(length = 20) private @NotNull String password;
+    @Column private @NotNull String password;
     @Column(length = 20) private @NotNull String name;
     @Column(length = 20) private @NotNull String firstName;
     @Column(length = 20) private @NotNull String lastName;
@@ -43,6 +43,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     public List<Role> roles;
+
+    public void changeRoles(List<Role> roles) {
+        this.roles = roles;
+    }
 
     public User toEntity() {
         return new User(userId, userName, password, name, firstName, lastName, email, birth, gender, address, phoneNumber, passport,

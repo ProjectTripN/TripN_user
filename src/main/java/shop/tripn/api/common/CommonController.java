@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface CommonController<R, T> {
     ResponseEntity<List<R>> findAll();
     ResponseEntity<R> getById(T id);
-    ResponseEntity<String> save(R entity);
+//    ResponseEntity<String> save(R T);
     ResponseEntity<Optional<R>> findById(T id);
     ResponseEntity<Boolean> existById(T id);
     ResponseEntity<Long> count();
