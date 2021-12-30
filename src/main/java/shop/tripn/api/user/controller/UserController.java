@@ -87,6 +87,7 @@ public class UserController implements CommonController<User, Long> {
     @Override
     public ResponseEntity<Boolean> existById(Long id) { return null; }
 
+    /**
     @PostMapping("/login")
     @ApiOperation(value="${UserController.signin}")
     @ApiResponses(value={
@@ -104,7 +105,7 @@ public class UserController implements CommonController<User, Long> {
         logger.info("로그인결과 : "+entityDto.getMessage());
         logger.info("token 값: "+ entityDto.getToken());
         return ResponseEntity.ok(entityDto);
-    }
+    }*/
 
     @PostMapping("/login/login")
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody UserDTO userDTO){
@@ -117,7 +118,7 @@ public class UserController implements CommonController<User, Long> {
         User entity = userRepository.findById(userDTO.getUserId())
                         .orElseThrow(()-> null);
 
-        System.out.println("아이디 찾아와 "+entity.getPassword());
+//        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
         UserDTO dto = new UserDTO();
         dto.setUserId(entity.getUserId());
         return ResponseEntity.ok(dto);
@@ -208,7 +209,12 @@ public class UserController implements CommonController<User, Long> {
 
     @PutMapping("/updatePassword")
     public ResponseEntity<User> updatePassword(@RequestBody User user){
-        userRepository.updatePassword(user.getUserId(), user.getPassword());
+        String pw = user.getPassword();
+        System.out.println("넘어온 비번"+pw);
+        String pw2 = passwordEncoder.encode(pw);
+        System.out.println("암호비번"+pw2);
+        user.setPassword(pw2);
+        userRepository.updatePassword(user.getUserId(), pw2);
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 

@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/mbti").permitAll()
                 .antMatchers("/users/mbti/mbtiList").permitAll()
                 .antMatchers("/users/mbti/mbti").permitAll()
+                .antMatchers("/users/update").permitAll()
                 .antMatchers("/users/updatePassword").permitAll()
                 .antMatchers("/existsById/{username}").permitAll()
                 .antMatchers("/mail/sendmail").permitAll()
@@ -77,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/list/{keyword}").permitAll()
                 .antMatchers("/boards/save").permitAll()
                 .antMatchers("/boards/list").permitAll()
+                .antMatchers("/boards/keyword/{keyword}").permitAll()
                 .antMatchers("/user_files/uploadAjax").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
                 .anyRequest().authenticated();

@@ -66,9 +66,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateMbtiList(@Param("userId") long userId, @Param("mbtiList") String mbtiList);
 
     @Modifying
-    @Transactional
+    @Transactional  //(mbti, mbti_list)=(select mbti, mbtiList from )
     @Query(value = "update users set mbti=:mbti, mbti_list=:mbtiList where user_id=:userId", nativeQuery = true)
-    void updateMbti2(@Param("userId") long userId, @Param("mbtiList") String mbtiList, @Param("mbti") String mbti);
+    void updateMbti2(@Param("userId") long userId, @Param("mbti") String mbti , @Param("mbtiList") String mbtiList);
 
     @Query(value = "SELECT COUNT(*) count FROM users", nativeQuery = true)
     long count();
