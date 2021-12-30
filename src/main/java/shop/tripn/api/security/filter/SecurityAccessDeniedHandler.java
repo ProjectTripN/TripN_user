@@ -17,6 +17,7 @@ public class SecurityAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
                        AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        System.out.println("********시큐리티 로그인");
         handlerExceptionResolver.resolveException(request, response, null, accessDeniedException);
     }
 }

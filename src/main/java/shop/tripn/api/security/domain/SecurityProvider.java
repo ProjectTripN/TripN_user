@@ -59,6 +59,17 @@ public class SecurityProvider implements AuthenticationProvider {
                 .compact();
     }
 
+    public String generateJwtToken(Authentication authentication) {
+
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + validityInMs))
+                .signWith(SignatureAlgorithm.HS512, securityKey)
+                .compact();
+    }
 
     public Authentication getAuthentication(String token){
         UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));

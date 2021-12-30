@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
-    private final long actorId;
+    private final long userId;
     private final String username;
     private final String email;
     private final String name;

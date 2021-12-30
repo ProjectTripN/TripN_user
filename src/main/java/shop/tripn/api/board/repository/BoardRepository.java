@@ -3,8 +3,10 @@ package shop.tripn.api.board.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import shop.tripn.api.board.domain.Board;
+import shop.tripn.api.user.domain.User;
 
 import java.util.List;
 
@@ -14,5 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findByQuestion(@Param("question") String question);
     @Query(value = "select * from board where board.question LIKE %:keyword% OR board.answer LIKE %:keyword% ", nativeQuery = true)
     List<Board> findKeywordSearch(String keyword);
+//    @Query(value = "select * from board where question LIKE %:keyword% OR answer LIKE %:keyword%", nativeQuery = true);
+//    List<Board> searchByBoardList(@Param("question") String question, @Param(""));
 
 }

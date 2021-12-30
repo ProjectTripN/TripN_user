@@ -51,7 +51,7 @@ public class BoardController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Board>> findAll() {
-        logger.info(String.format("전체 조회 :" + boardRepository.findAll()));
+//        logger.info(String.format("전체 조회 :" + boardRepository.findAll()));
         return ResponseEntity.ok(boardRepository.findAll());
     }
 

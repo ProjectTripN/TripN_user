@@ -13,11 +13,17 @@ import java.util.Optional;
 @Component
 public interface UserService {
     Optional<User> findById(long userId);
-//    Optional<User> login(String username, String password);
+    //    Optional<User> login(String username, String password);
     List<User> searchByName(String username);
-//    UserDTO join(UserDTO userDTO);
+    //    UserDTO join(UserDTO userDTO);
     Map<String, String> join(UserDTO userDTO);
     UserDTO login(UserDTO userDTO);
+
+
+//    boolean matches(CharSequence rawPassword, String encodedPAssword);
+
+
+
     default Map<String, Object> dtoToEntity(UserDTO userDTO){
         Map<String, Object> entityMap = new HashMap<>();
         User user = User.builder().userId(userDTO.getUserId()).userName(userDTO.getUserName()).password(userDTO.getPassword())

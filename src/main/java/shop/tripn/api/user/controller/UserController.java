@@ -1,24 +1,34 @@
 package shop.tripn.api.user.controller;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import shop.tripn.api.common.CommonController;
+import shop.tripn.api.security.domain.JwtResponse;
 import shop.tripn.api.security.domain.SecurityProvider;
+import shop.tripn.api.security.domain.SecurityToken;
+import shop.tripn.api.security.domain.UserDetailsImpl;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
 import shop.tripn.api.user.service.UserService;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -30,6 +40,9 @@ public class UserController implements CommonController<User, Long> {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final UserService userService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final SecurityProvider securityProvider;
 
     @PostMapping("/join")
     @ApiOperation(value="${UserController.signup}")
@@ -40,15 +53,30 @@ public class UserController implements CommonController<User, Long> {
     })
     public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
         logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
-//        System.out.println("encodePassword: "+userDTO.getPassword());
+        //        System.out.println("encodePassword: "+userDTO.getPassword());
         Map<String, String> m = userService.join(userDTO);
-//        System.out.println("???"+m);
-//        userRepository.save();
-//        Map<String, String> resultMap = new HashMap<>();
-//        return new ResponseEntity(userService.join(user), HttpStatus.OK);
+        //        System.out.println("???"+m);
+        //        userRepository.save();
+        //        Map<String, String> resultMap = new HashMap<>();
+        //        return new ResponseEntity(userService.join(user), HttpStatus.OK);
         return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
-    }
+       }
+/**
+ public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
+ logger.info(String.format("회원가입 정보: %s", user.toString()));
+ User u = user.toEntity();
+ userRepository.save(u);
+ return ResponseEntity.ok(user.getName()+"님의 회원가입을 축하드립니다.");
 
+ public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
+ logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
+ //        System.out.println("encodePassword: "+userDTO.getPassword());
+ Map<String, String> m = userService.join(userDTO);
+ //        System.out.println("???"+m);
+ //        userRepository.save();
+ //        Map<String, String> resultMap = new HashMap<>();
+ //        return new ResponseEntity(userService.join(user), HttpStatus.OK);
+ return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");*/
     @GetMapping("/existsById/{username}")
     public ResponseEntity<Boolean> existById(@PathVariable String userName) {
         boolean b = userRepository.existsByUserName(userName);
@@ -65,15 +93,35 @@ public class UserController implements CommonController<User, Long> {
             @ApiResponse(code=400,message = "Something Wrong"),
             @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
     public ResponseEntity<UserDTO> login(@ApiParam("Signin User") @RequestBody UserDTO userDTO)
-            throws IOException {
+            throws Exception {
         logger.info("로그인에서 들어온 user값"+userDTO.toString());
+        String pw = userDTO.getPassword();
+        System.out.println("넘어온 비번"+pw);
+        String pw2 = passwordEncoder.encode(pw);
+        System.out.println("암호비번"+pw2);
+        userDTO.setPassword(pw2);
         UserDTO entityDto = userService.login(userDTO);
         logger.info("로그인결과 : "+entityDto.getMessage());
         logger.info("token 값: "+ entityDto.getToken());
-//        return ResponseEntity.ok(entityDto);
         return ResponseEntity.ok(entityDto);
     }
 
+    @PostMapping("/login/login")
+    public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody UserDTO userDTO){
+        String pw = userDTO.getPassword();
+        System.out.println("넘어온 비번"+pw);
+        String pw2 = passwordEncoder.encode(pw);
+        System.out.println("암호비번"+pw2);
+        userDTO.setPassword(pw2);
+
+        User entity = userRepository.findById(userDTO.getUserId())
+                        .orElseThrow(()-> null);
+
+        System.out.println("아이디 찾아와 "+entity.getPassword());
+        UserDTO dto = new UserDTO();
+        dto.setUserId(entity.getUserId());
+        return ResponseEntity.ok(dto);
+    }
 
     @GetMapping("/list")
     @Override
