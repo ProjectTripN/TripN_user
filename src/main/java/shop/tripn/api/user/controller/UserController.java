@@ -1,5 +1,6 @@
 package shop.tripn.api.user.controller;
 
+import org.springframework.boot.autoconfigure.security.saml2.Saml2RelyingPartyAutoConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,6 +56,7 @@ public class UserController implements CommonController<User, Long> {
         logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
         //        System.out.println("encodePassword: "+userDTO.getPassword());
         Map<String, String> m = userService.join(userDTO);
+        System.out.println("토큰 들어왔나? "+ m);
         //        System.out.println("???"+m);
         //        userRepository.save();
         //        Map<String, String> resultMap = new HashMap<>();
@@ -108,19 +110,29 @@ public class UserController implements CommonController<User, Long> {
     }*/
 
     @PostMapping("/login/login")
+//    @ApiOperation(value="${UserController.signin}")
+//    @ApiResponses(value={
+//            @ApiResponse(code=400,message = "Something Wrong"),
+//            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody UserDTO userDTO){
+//        logger.info("로그인에서 들어온 user값"+userDTO.toString());
         String pw = userDTO.getPassword();
         System.out.println("넘어온 비번"+pw);
         String pw2 = passwordEncoder.encode(pw);
         System.out.println("암호비번"+pw2);
         userDTO.setPassword(pw2);
-
-        User entity = userRepository.findById(userDTO.getUserId())
+//        String u = userDTO.toString();
+//        System.out.println(">>>>>>>>>>>>>>>>>>"+u);
+//        UserDTO entityDto = userService.login(userDTO);
+//        logger.info("token 값: "+ entityDto.getToken());
+        User entity = userRepository.findByUserName(userDTO.getUserName())
                         .orElseThrow(()-> null);
 
 //        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
         UserDTO dto = new UserDTO();
         dto.setUserId(entity.getUserId());
+//        String u = userDTO.toString();
+        System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
         return ResponseEntity.ok(dto);
     }
 
