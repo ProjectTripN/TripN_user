@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService{
             u.setFirstName(userDTO.getFirstName());
             u.setGender(userDTO.getGender());
             u.setLastName(userDTO.getLastName());
-            String g = u.getLastName();
-            System.out.println("lastname"+g);
+//            String g = u.getLastName();
+//            System.out.println("lastname"+g);
             u.setLastName(userDTO.getLastName());
             u.setMbti(userDTO.getMbti());
             u.setMbtiList(userDTO.getMbtiList());
@@ -67,7 +67,8 @@ public class UserServiceImpl implements UserService{
             u.setPhoneNumber(userDTO.getPhoneNumber());
             u.setUserName(userDTO.getUserName());
 
-            userRepository.save(u); // save 안될시 saveAndFlush 변경하자
+            userRepository.saveAndFlush(u); // save 안될시 saveAndFlush 변경하자
+            System.out.println("이거 모야모야"+u);
 //            String Token = provider.createToken(entityDto.getUserName(), //token 생성
 //                        userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
 //            entityDto.setToken(Token);//token을 담아줌
@@ -82,37 +83,72 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDTO login(UserDTO userDTO) {
 //        logger.info("로그인에서 들어온 user값"+userDTO.toString());
-        System.out.println("************로그인한 유저값"+userDTO.toString());
+        System.out.println("로그인한 유저값"+userDTO.toString());
 
         try {
             User entity = dtoEntity(userDTO);
             userRepository.login(entity.getUserName(),entity.getPassword());
             UserDTO entityDto =  new UserDTO();
-
+            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
             Optional<User> userLogin = userRepository.login(userDTO.getUserName(), userDTO.getPassword()); //login 정보 담기
+            if(userLogin != null){
             entityDto = entityDto(userLogin.get()); //userlogin.get(): optional을 풀어줌
             String Token = provider.createToken(entityDto.getUserName(), //token 생성
                     userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
             entityDto.setToken(Token);//token을 담아줌
             entityDto.setMessage("LOGIN SUCCESS"+Token);
-
+            UserDTO d = new UserDTO();
+            System.out.println("유저 들어왔니? "+d);
 //            UserDTO u = new UserDTO();
 //            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
+            entityDto.setMessage("LOGIN SUCCESS");
             return entityDto;
-//
-//            if(userLogin != null){
-//
-//
-//            }else{
-//                entityDto.setMessage("LOGIN FAIL");
-//                return entityDto;
-//            }
+            }else{
+                entityDto.setMessage("LOGIN FAIL");
+                return entityDto;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new SecurityRuntimeException("Invalid User-Username / Password supplied",
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+//    @Override
+//    public UserDTO login(UserDTO userDTO) {
+////        logger.info("로그인에서 들어온 user값"+userDTO.toString());
+//        System.out.println("로그인한 유저값"+userDTO.toString());
+//
+//        try {
+//            User entity = dtoEntity(userDTO);
+//            userRepository.login(entity.getUserName(),entity.getPassword());
+//            UserDTO entityDto =  new UserDTO();
+//            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
+//            Optional<User> userLogin = userRepository.login(userDTO.getUserName(), userDTO.getPassword()); //login 정보 담기
+//            entityDto = entityDto(userLogin.get()); //userlogin.get(): optional을 풀어줌
+//            String Token = provider.createToken(entityDto.getUserName(), //token 생성
+//                    userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
+//            entityDto.setToken(Token);//token을 담아줌
+//            entityDto.setMessage("LOGIN SUCCESS"+Token);
+//            UserDTO d = new UserDTO();
+//            System.out.println("유저 들어왔니? "+d);
+////            UserDTO u = new UserDTO();
+////            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
+//            entityDto.setMessage("LOGIN SUCCESS");
+//            return entityDto;
+////
+////            if(userLogin != null){
+////
+////
+////            }else{
+////                entityDto.setMessage("LOGIN FAIL");
+////                return entityDto;
+////            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new SecurityRuntimeException("Invalid User-Username / Password supplied",
+//                    HttpStatus.UNPROCESSABLE_ENTITY);
+//        }
+//    }
 
 //    @Override
 //    public UserDTO login(UserDTO userDTO) {
