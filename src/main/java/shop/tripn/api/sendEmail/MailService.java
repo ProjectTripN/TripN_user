@@ -39,7 +39,7 @@ public class MailService {
         try {
             MailHandler mailHandler = new MailHandler(mailSender);
             mailHandler.setFrom(MailService.FROM_ADDRESS);
-            mailHandler.setTo(mailDto.getAddress());
+            mailHandler.setTo(mailDto.getEmail());
             mailHandler.setSubject("TripN 임시비밀번호 안내 이메일 입니다.");
 
             String pwd = passwordEncoder.encode(str);
