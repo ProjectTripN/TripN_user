@@ -58,22 +58,24 @@ public class UserController implements CommonController<User, Long> {
         //        return new ResponseEntity(userService.join(user), HttpStatus.OK);
         return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
        }
-/**
- public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
- logger.info(String.format("회원가입 정보: %s", user.toString()));
- User u = user.toEntity();
- userRepository.save(u);
- return ResponseEntity.ok(user.getName()+"님의 회원가입을 축하드립니다.");
+    /**
+     public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
+     logger.info(String.format("회원가입 정보: %s", user.toString()));
+     User u = user.toEntity();
+     userRepository.save(u);
+     return ResponseEntity.ok(user.getName()+"님의 회원가입을 축하드립니다.");
 
- public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
- logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
- //        System.out.println("encodePassword: "+userDTO.getPassword());
- Map<String, String> m = userService.join(userDTO);
- //        System.out.println("???"+m);
- //        userRepository.save();
- //        Map<String, String> resultMap = new HashMap<>();
- //        return new ResponseEntity(userService.join(user), HttpStatus.OK);
- return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");*/
+     public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
+     logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
+             System.out.println("encodePassword: "+userDTO.getPassword());
+     Map<String, String> m = userService.join(userDTO);
+             System.out.println("???"+m);
+             userRepository.save();
+             Map<String, String> resultMap = new HashMap<>();
+             return new ResponseEntity(userService.join(user), HttpStatus.OK);
+     return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
+     */
+
     @GetMapping("/existsById/{username}")
     public ResponseEntity<Boolean> existById(@PathVariable String userName) {
         boolean b = userRepository.existsByUserName(userName);
@@ -126,7 +128,7 @@ public class UserController implements CommonController<User, Long> {
 //        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
         UserDTO dto = new UserDTO();
         dto.setUserId(entity.getUserId());
-//        dto.setUserName(entity.getUserName());
+        dto.setUserName(entity.getUserName());
 //        dto.setAddress(entity.getAddress());
 //        dto.setBirth(entity.getBirth());
 //        dto.setCardCompany(entity.getCardCompany());
@@ -146,82 +148,7 @@ public class UserController implements CommonController<User, Long> {
         System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
         return ResponseEntity.ok(dto);
     }
-    /**
-    @PostMapping("/login/login")
-//    @ApiOperation(value="${UserController.signin}")
-//    @ApiResponses(value={
-//            @ApiResponse(code=400,message = "Something Wrong"),
-//            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
-    public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody UserDTO userDTO){
-//        logger.info("로그인에서 들어온 user값"+userDTO.toString());
-        String pw = userDTO.getPassword();
-        System.out.println("넘어온 비번"+pw);
-        String pw2 = passwordEncoder.encode(pw);
-        System.out.println("암호비번"+pw2);
-        userDTO.setPassword(pw2);
-//        String u = userDTO.toString();
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+u);
-//        UserDTO entityDto = userService.login(userDTO);
-//        logger.info("token 값: "+ entityDto.getToken());
-        logger.info("로그인 값 들어왔니?"+userDTO.toString());
-        User entity = userRepository.findById(userDTO.getUserId())
-                        .orElseThrow(()-> null);
 
-//        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
-        UserDTO dto = new UserDTO();
-        dto.setUserId(entity.getUserId());
-//        String u = userDTO.toString();
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
-//        UserDTO entityDto = userService.login(userDTO);
-//        logger.info("로그인결과 : "+entityDto.getMessage());
-
-        return ResponseEntity.ok(dto);
-    }*/
-
-/**
-    @PostMapping("/login/login")
-//    @ApiOperation(value="${UserController.signin}")
-//    @ApiResponses(value={
-//            @ApiResponse(code=400,message = "Something Wrong"),
-//            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody UserDTO userDTO){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDTO.getUserName(),userDTO.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = securityProvider.generateJwtToken(authentication);
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-        String pw = userDTO.getPassword();
-        System.out.println("넘어온 비번"+pw);
-        String pw2 = passwordEncoder.encode(pw);
-        System.out.println("암호비번"+pw2);
-        userDTO.setPassword(pw2);
-        User entity = userRepository.findByUserName(userDTO.getUserName())
-                .orElseThrow(()-> null);
-//        String u = userDTO.toString();
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+u);
-//        UserDTO entityDto = userService.login(userDTO);
-//        logger.info("token 값: "+ entityDto.getToken());
-//        logger.info("로그인 값 들어왔니?"+userDTO.toString());
-//        User entity = userRepository.findByUserName(userDTO.getUserName())
-//                .orElseThrow(()-> null);
-
-//        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
-//        UserDTO dto = new UserDTO();
-//        dto.setUserId(entity.getUserId());
-//        String u = userDTO.toString();
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
-//        UserDTO entityDto = userService.login(userDTO);
-//        logger.info("로그인결과 : "+entityDto.getMessage());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getUserId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
-    }*/
     @GetMapping("/list")
     @Override
     public ResponseEntity<List<User>> findAll() {
@@ -303,7 +230,7 @@ public class UserController implements CommonController<User, Long> {
     public ResponseEntity<User> updateMbti2(@RequestBody User user){
         userRepository.updateMbti2(user.getUserId(), user.getMbti(), user.getMbtiList());
         User u = user.toEntity();
-        System.out.println(u);
+        System.out.println("넘어온 값???"+u);
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 

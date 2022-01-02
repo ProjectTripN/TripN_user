@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
 
 
@@ -12,7 +13,7 @@ import shop.tripn.api.user.repository.UserRepository;
 public class MailService {
 
     private UserRepository userRepository;
-
+//    private final UserDTO userDTO;
     private JavaMailSender mailSender;
     private final PasswordEncoder passwordEncoder;
     private static final String FROM_ADDRESS = "protripn@gmail.com";
@@ -34,18 +35,18 @@ public class MailService {
 
     public void mailSend(MailDto mailDto) {
         String str = getTempPassword();
+//        UserDTO userDTO = new UserDTO();
         try {
             MailHandler mailHandler = new MailHandler(mailSender);
-
-            mailHandler.setTo(mailDto.getAddress());
             mailHandler.setFrom(MailService.FROM_ADDRESS);
-            mailHandler.setSubject(mailDto.getName()+"님의 TripN 임시비밀번호 안내 이메일 입니다.");
+            mailHandler.setTo(mailDto.getAddress());
+            mailHandler.setSubject("TripN 임시비밀번호 안내 이메일 입니다.");
 
             String pwd = passwordEncoder.encode(str);
 //            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>" + pwd);
 
             userRepository.forgotPassword(mailDto.getEmail(), pwd);
-            mailHandler.setText("안녕하세요.\n\n TripN 임시비밀번호 안내 관련 이메일 입니다.\n\n"+mailDto.getName()+"님의 임시 비밀번호는 '"
+            mailHandler.setText("안녕하세요.\n\n TripN 임시비밀번호 안내 관련 이메일 입니다.\n\n 회원님의 임시 비밀번호는 '"
             +str+"' 입니다.\n\n 임시 비밀번호로 로그인 후 꼭! 회원정보에서 비밀번호를 변경해 주세요.");
 
             mailHandler.send();
@@ -56,6 +57,7 @@ public class MailService {
         }
 
     }
+
     /**
     public void joinMailSend(MailDto mailDto) {
         int rand = (int)((Math.random()*(99999-10000+1))+10000);
