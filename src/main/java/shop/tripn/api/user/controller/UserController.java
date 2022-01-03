@@ -144,6 +144,7 @@ public class UserController implements CommonController<User, Long> {
         dto.setPassword(entity.getPassword());
 //        dto.setPhoneNumber(entity.getPhoneNumber());
 //        dto.setUserName(entity.getUserName());
+        dto.setToken(entity.getToken());
 //        String u = userDTO.toString();
         System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
         return ResponseEntity.ok(dto);

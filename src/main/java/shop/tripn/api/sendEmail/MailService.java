@@ -35,7 +35,6 @@ public class MailService {
 
     public void mailSend(MailDto mailDto) {
         String str = getTempPassword();
-//        UserDTO userDTO = new UserDTO();
         try {
             MailHandler mailHandler = new MailHandler(mailSender);
             mailHandler.setFrom(MailService.FROM_ADDRESS);

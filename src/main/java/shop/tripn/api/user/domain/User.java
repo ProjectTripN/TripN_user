@@ -40,6 +40,7 @@ public class User {
     @Column(length = 10) private @NotNull String cardCompany;
     @Column private @NotNull String mbtiList;
     @Column(name = "reg_date", length = 20) private @NotNull String regDate;
+    @Column private String token;
 
     @ElementCollection(fetch = FetchType.EAGER)
     public List<Role> roles;
@@ -50,6 +51,6 @@ public class User {
 
     public User toEntity() {
         return new User(userId, userName, password, name, firstName, lastName, email, birth, gender, address, phoneNumber, passport,
-                mbti, cardNumber, cardCompany, mbtiList, regDate, roles);
+                mbti, cardNumber, cardCompany, mbtiList, regDate, token,roles);
     }
 }

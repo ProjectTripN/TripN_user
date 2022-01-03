@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService{
             u.setLastName(userDTO.getLastName());
 //            String g = u.getLastName();
 //            System.out.println("lastname"+g);
-            u.setLastName(userDTO.getLastName());
             u.setMbti(userDTO.getMbti());
             u.setMbtiList(userDTO.getMbtiList());
             u.setName(userDTO.getName());
