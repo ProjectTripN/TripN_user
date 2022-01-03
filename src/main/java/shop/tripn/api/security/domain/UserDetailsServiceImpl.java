@@ -1,18 +1,12 @@
 package shop.tripn.api.security.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.repository.UserRepository;
-
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Service

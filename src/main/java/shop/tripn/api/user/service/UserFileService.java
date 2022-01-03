@@ -6,11 +6,9 @@ import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.domain.UserFile;
 import shop.tripn.api.user.domain.UserFileDTO;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 public interface UserFileService {
 

@@ -1,30 +1,22 @@
 package shop.tripn.api.user.controller;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import shop.tripn.api.common.CommonController;
-import shop.tripn.api.security.domain.JwtResponse;
-import shop.tripn.api.security.domain.SecurityProvider;
-import shop.tripn.api.security.domain.UserDetailsImpl;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
 import shop.tripn.api.user.service.UserService;
-
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -37,8 +29,6 @@ public class UserController implements CommonController<User, Long> {
     private final UserService userService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final SecurityProvider securityProvider;
 
     @PostMapping("/join")
     @ApiOperation(value="${UserController.signup}")
@@ -49,31 +39,15 @@ public class UserController implements CommonController<User, Long> {
     })
     public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
         logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
-        //        System.out.println("encodePassword: "+userDTO.getPassword());
-        Map<String, String> m = userService.join(userDTO);
-        System.out.println("토큰 들어왔나? "+ m);
-        //        System.out.println("???"+m);
-//                userRepository.save(m);
-        //        Map<String, String> resultMap = new HashMap<>();
-        //        return new ResponseEntity(userService.join(user), HttpStatus.OK);
+        userService.join(userDTO);
         return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
        }
-    /**
+     /** 시큐리티 전 join
      public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody User user) {
      logger.info(String.format("회원가입 정보: %s", user.toString()));
      User u = user.toEntity();
      userRepository.save(u);
      return ResponseEntity.ok(user.getName()+"님의 회원가입을 축하드립니다.");
-
-     public ResponseEntity<String> save(@ApiParam("Signup User") @RequestBody UserDTO userDTO) {
-     logger.info(String.format("회원가입 정보: %s", userDTO.toString()));
-             System.out.println("encodePassword: "+userDTO.getPassword());
-     Map<String, String> m = userService.join(userDTO);
-             System.out.println("???"+m);
-             userRepository.save();
-             Map<String, String> resultMap = new HashMap<>();
-             return new ResponseEntity(userService.join(user), HttpStatus.OK);
-     return ResponseEntity.ok(userDTO.getName()+"님의 회원가입을 축하드립니다.");
      */
 
     @GetMapping("/existsById/{username}")
@@ -86,46 +60,17 @@ public class UserController implements CommonController<User, Long> {
     @Override
     public ResponseEntity<Boolean> existById(Long id) { return null; }
 
-    /**
-    @PostMapping("/login")
+    @PostMapping("/login/login")
     @ApiOperation(value="${UserController.signin}")
     @ApiResponses(value={
             @ApiResponse(code=400,message = "Something Wrong"),
             @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
-    public ResponseEntity<UserDTO> login(@ApiParam("Signin User") @RequestBody UserDTO userDTO)
-            throws Exception {
-        logger.info("로그인에서 들어온 user값"+userDTO.toString());
-        String pw = userDTO.getPassword();
-        System.out.println("넘어온 비번"+pw);
-        String pw2 = passwordEncoder.encode(pw);
-        System.out.println("암호비번"+pw2);
-        userDTO.setPassword(pw2);
-        UserDTO entityDto = userService.login(userDTO);
-        logger.info("로그인결과 : "+entityDto.getMessage());
-        logger.info("token 값: "+ entityDto.getToken());
-        return ResponseEntity.ok(entityDto);
-    }*/
-
-    @PostMapping("/login/login")
-//    @ApiOperation(value="${UserController.signin}")
-//    @ApiResponses(value={
-//            @ApiResponse(code=400,message = "Something Wrong"),
-//            @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
     public ResponseEntity<UserDTO> authenticateUser(@Valid @RequestBody UserDTO userDTO){
-//        logger.info("로그인에서 들어온 user값"+userDTO.toString());
         String pw = userDTO.getPassword();
-        System.out.println("넘어온 비번"+pw);
         String pw2 = passwordEncoder.encode(pw);
-        System.out.println("암호비번"+pw2);
         userDTO.setPassword(pw2);
-//        String u = userDTO.toString();
-//        System.out.println(">>>>>>>>>>>>>>>>>>"+u);
-//        UserDTO entityDto = userService.login(userDTO);
-//        logger.info("token 값: "+ entityDto.getToken());
         User entity = userRepository.findByUserName(userDTO.getUserName())
                 .orElseThrow(()-> null);
-
-//        System.out.println("아이디에 맞는 비번 찾아와 "+entity.getPassword());
         UserDTO dto = new UserDTO();
         dto.setUserId(entity.getUserId());
         dto.setUserName(entity.getUserName());
@@ -145,10 +90,27 @@ public class UserController implements CommonController<User, Long> {
 //        dto.setPhoneNumber(entity.getPhoneNumber());
 //        dto.setUserName(entity.getUserName());
         dto.setToken(entity.getToken());
-//        String u = userDTO.toString();
-        System.out.println(">>>>>>>>>>>>>>>>>>"+dto);
         return ResponseEntity.ok(dto);
     }
+    /** 시큐리티 전 login
+     @PostMapping("/login")
+     @ApiOperation(value="${UserController.signin}")
+     @ApiResponses(value={
+     @ApiResponse(code=400,message = "Something Wrong"),
+     @ApiResponse(code=422,message = "유효하지 않는 아이디 / 비밀번호")})
+     public ResponseEntity<UserDTO> login(@ApiParam("Signin User") @RequestBody UserDTO userDTO)
+     throws Exception {
+     logger.info("로그인에서 들어온 user값"+userDTO.toString());
+     String pw = userDTO.getPassword();
+     System.out.println("넘어온 비번"+pw);
+     String pw2 = passwordEncoder.encode(pw);
+     System.out.println("암호비번"+pw2);
+     userDTO.setPassword(pw2);
+     UserDTO entityDto = userService.login(userDTO);
+     logger.info("로그인결과 : "+entityDto.getMessage());
+     logger.info("token 값: "+ entityDto.getToken());
+     return ResponseEntity.ok(entityDto);
+     }*/
 
     @GetMapping("/list")
     @Override
@@ -162,8 +124,6 @@ public class UserController implements CommonController<User, Long> {
     public ResponseEntity<User> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userRepository.getById(id));
     }
-
-
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<User>> searchByName(@PathVariable String name) {
@@ -231,16 +191,13 @@ public class UserController implements CommonController<User, Long> {
     public ResponseEntity<User> updateMbti2(@RequestBody User user){
         userRepository.updateMbti2(user.getUserId(), user.getMbti(), user.getMbtiList());
         User u = user.toEntity();
-        System.out.println("넘어온 값???"+u);
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));
     }
 
     @PutMapping("/updatePassword")
     public ResponseEntity<User> updatePassword(@RequestBody User user){
         String pw = user.getPassword();
-        System.out.println("넘어온 비번"+pw);
         String pw2 = passwordEncoder.encode(pw);
-        System.out.println("암호비번"+pw2);
         user.setPassword(pw2);
         userRepository.updatePassword(user.getUserId(), pw2);
         return ResponseEntity.ok(userRepository.getById(user.getUserId()));

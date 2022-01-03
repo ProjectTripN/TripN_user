@@ -7,9 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Proxy;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.util.List;
+
 
 @Builder
 @Data
@@ -53,4 +53,6 @@ public class User {
         return new User(userId, userName, password, name, firstName, lastName, email, birth, gender, address, phoneNumber, passport,
                 mbti, cardNumber, cardCompany, mbtiList, regDate, token,roles);
     }
+
+
 }

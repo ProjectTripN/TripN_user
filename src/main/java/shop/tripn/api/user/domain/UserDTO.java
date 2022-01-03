@@ -1,11 +1,9 @@
 package shop.tripn.api.user.domain;
 
-import com.sun.istack.NotNull;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 

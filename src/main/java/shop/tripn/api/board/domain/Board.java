@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Proxy;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Entity

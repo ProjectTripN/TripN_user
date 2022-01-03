@@ -3,12 +3,8 @@ package shop.tripn.api.board.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import shop.tripn.api.board.domain.Board;
-import shop.tripn.api.user.domain.User;
-
 import java.util.List;
 
 @Repository

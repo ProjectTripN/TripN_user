@@ -8,14 +8,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.tripn.api.security.domain.SecurityProvider;
 import shop.tripn.api.security.exception.SecurityRuntimeException;
-import shop.tripn.api.user.controller.UserController;
 import shop.tripn.api.user.domain.Role;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
 import shop.tripn.api.user.repository.UserRepository;
-
 import javax.transaction.Transactional;
 import java.util.*;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +23,17 @@ public class UserServiceImpl implements UserService{
     private final SecurityProvider provider;
     private final PasswordEncoder passwordEncoder;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
 
     @Transactional
     @Override
     public Map<String, String> join(UserDTO userDTO) {
-        System.out.println(".userDTO.getUserName()>>>>>>>>>>>>"+userDTO.getUserName());
         UserDTO entityDto = new UserDTO(); //
         if (!userRepository.existsByUserName(userDTO.getUserName())) {
-            System.out.println("username 없으니까 만들어줌");
-
             String passwd = passwordEncoder.encode(userDTO.getPassword());
             String pwd = userDTO.getPassword();
-            System.out.println("*******************암호화된 비밀번호******************" + passwd);
             userDTO.setPassword(passwd);
             List<Role> list = new ArrayList<>();
             list.add(Role.USER_ROLES);
@@ -47,7 +42,7 @@ public class UserServiceImpl implements UserService{
             resultMap.put("JwtToken", provider.createToken(userDTO.getUserName(),list));
 
             User u = new User();
-            u.setUserId(u.getUserId());
+            u.setUserId(userDTO.getUserId());
             u.setAddress(userDTO.getAddress());
             u.setBirth(userDTO.getBirth());
             u.setCardCompany(userDTO.getCardCompany());
@@ -56,8 +51,6 @@ public class UserServiceImpl implements UserService{
             u.setFirstName(userDTO.getFirstName());
             u.setGender(userDTO.getGender());
             u.setLastName(userDTO.getLastName());
-//            String g = u.getLastName();
-//            System.out.println("lastname"+g);
             u.setMbti(userDTO.getMbti());
             u.setMbtiList(userDTO.getMbtiList());
             u.setName(userDTO.getName());
@@ -65,6 +58,7 @@ public class UserServiceImpl implements UserService{
             u.setPassword(userDTO.getPassword());
             u.setPhoneNumber(userDTO.getPhoneNumber());
             u.setUserName(userDTO.getUserName());
+            u.setToken(userDTO.getToken());
 
             userRepository.saveAndFlush(u); // save 안될시 saveAndFlush 변경하자
             System.out.println("이거 모야모야"+u);
@@ -79,28 +73,22 @@ public class UserServiceImpl implements UserService{
             throw new SecurityRuntimeException("User Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
+
     @Override
     public UserDTO login(UserDTO userDTO) {
-//        logger.info("로그인에서 들어온 user값"+userDTO.toString());
-        System.out.println("로그인한 유저값"+userDTO.toString());
-
         try {
             User entity = dtoEntity(userDTO);
             userRepository.login(entity.getUserName(),entity.getPassword());
             UserDTO entityDto =  new UserDTO();
-            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
             Optional<User> userLogin = userRepository.login(userDTO.getUserName(), userDTO.getPassword()); //login 정보 담기
             if(userLogin != null){
-            entityDto = entityDto(userLogin.get()); //userlogin.get(): optional을 풀어줌
-            String Token = provider.createToken(entityDto.getUserName(), //token 생성
-                    userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
-            entityDto.setToken(Token);//token을 담아줌
-            entityDto.setMessage("LOGIN SUCCESS"+Token);
-            UserDTO d = new UserDTO();
-            System.out.println("유저 들어왔니? "+d);
-//            UserDTO u = new UserDTO();
-//            System.out.println("*************로그인에서 들어온 user값*************"+entityDto);
-            return entityDto;
+                entityDto = entityDto(userLogin.get()); //userlogin.get(): optional을 풀어줌
+                String Token = provider.createToken(entityDto.getUserName(), //token 생성
+                        userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
+                entityDto.setToken(Token);//token을 담아줌
+                entityDto.setMessage("LOGIN SUCCESS"+Token);
+                UserDTO d = new UserDTO();
+                return entityDto;
             }else{
                 entityDto.setMessage("LOGIN FAIL");
                 return entityDto;
@@ -111,13 +99,11 @@ public class UserServiceImpl implements UserService{
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
-
     /**
     @Override
     public UserDTO login(UserDTO userDTO) {
         logger.info("로그인에서 들어온 user값"+userDTO.toString());
         try {
-
             String pwd = passwordEncoder.encode(userDTO.getPassword());
             System.out.println("로그인 아이디"+userDTO.getUserName());
             System.out.println("로그인 비번 "+pwd);
@@ -167,17 +153,6 @@ public class UserServiceImpl implements UserService{
     public List<User> searchByName(String username) {
         return userRepository.searchByName(username);
     }
-    /**
-    @Override
-    public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        if (rawPassword == null){
-            throw new IllegalArgumentException("rawPassword cannot be null");
-        }else  if(encodedPassword != null && encodedPassword.length() != 0){
-            if(!this.BCRYPT_PATTERN.matcher())
-        }
-        return false;
-    }
-   */
 
     @Override
     public Optional<List<User>> searchOption(UserDTO userDTO) {

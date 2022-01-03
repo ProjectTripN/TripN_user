@@ -15,7 +15,7 @@ public class MailHandler {
             MessagingException {
         this.sender = jSender;
         message = jSender.createMimeMessage();
-        messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+        messageHelper = new MimeMessageHelper(message, "UTF-8");
     }
 
     public void setFrom(String fromAddress) throws MessagingException {

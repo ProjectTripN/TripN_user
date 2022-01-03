@@ -6,10 +6,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import shop.tripn.api.user.domain.User;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 @Getter
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {

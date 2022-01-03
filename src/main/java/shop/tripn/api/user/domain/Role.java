@@ -3,8 +3,9 @@ package shop.tripn.api.user.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Arrays;
+
+
 @Getter
 @RequiredArgsConstructor
 public enum Role implements GrantedAuthority {

@@ -1,15 +1,10 @@
 package shop.tripn.api.user.service;
 
-import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import shop.tripn.api.user.domain.User;
@@ -18,18 +13,15 @@ import shop.tripn.api.user.domain.UserFile;
 import shop.tripn.api.user.domain.UserFileDTO;
 import shop.tripn.api.user.repository.UserFileRepository;
 import shop.tripn.api.user.repository.UserRepository;
-
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 import java.io.File;
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
+
 
 @Transactional
 @Log4j2

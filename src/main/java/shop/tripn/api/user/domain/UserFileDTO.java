@@ -1,9 +1,7 @@
 package shop.tripn.api.user.domain;
 
-import shop.tripn.api.user.domain.User;
 import lombok.*;
 import org.springframework.stereotype.Component;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 

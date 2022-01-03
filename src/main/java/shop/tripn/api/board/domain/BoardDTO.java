@@ -2,7 +2,6 @@ package shop.tripn.api.board.domain;
 
 import lombok.Builder;
 import lombok.Data;
-
 import java.io.Serializable;
 
 @Data

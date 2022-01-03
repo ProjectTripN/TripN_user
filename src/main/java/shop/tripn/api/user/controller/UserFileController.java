@@ -3,18 +3,12 @@ package shop.tripn.api.user.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import shop.tripn.api.user.domain.UserFileDTO;
 import shop.tripn.api.user.service.UserFileServiceImpl;
-
-import java.io.File;
-import java.net.URLDecoder;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 

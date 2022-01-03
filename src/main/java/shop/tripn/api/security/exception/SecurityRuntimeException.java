@@ -1,4 +1,5 @@
 package shop.tripn.api.security.exception;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -8,16 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import shop.tripn.api.board.domain.Board;
-import shop.tripn.api.board.domain.BoardDTO;
 import shop.tripn.api.board.repository.BoardRepository;
 import shop.tripn.api.board.service.BoardServiceImpl;
-import shop.tripn.api.user.domain.User;
-import shop.tripn.api.user.domain.UserDTO;
-
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Optional;
 
 
 @CrossOrigin(origins = "*")
@@ -55,15 +49,8 @@ public class BoardController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Board>> findAll() {
-//        logger.info(String.format("전체 조회 :" + boardRepository.findAll()));
         return ResponseEntity.ok(boardRepository.findAll());
     }
-
-//    @PostMapping("/list/boardSearch")
-//    public ResponseEntity <Optional<List<Board>>> findByKeywordSearch(
-//            @RequestBody BoardDTO boardDTO ){
-//        return ResponseEntity.ok(boardServiceImpl.searchOption(boardDTO));
-//    }
 
     @GetMapping("/page")
     public String list(HttpSession session, Model model, @RequestParam(required = false,defaultValue = "0", value = "page") int page){

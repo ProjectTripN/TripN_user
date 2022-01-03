@@ -1,14 +1,13 @@
 package shop.tripn.api.user.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import shop.tripn.api.user.domain.User;
 import shop.tripn.api.user.domain.UserDTO;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Component
 public interface UserService {
@@ -18,11 +17,7 @@ public interface UserService {
     //    UserDTO join(UserDTO userDTO);
     Map<String, String> join(UserDTO userDTO);
     UserDTO login(UserDTO userDTO);
-
-
-//    boolean matches(CharSequence rawPassword, String encodedPAssword);
-
-
+    //    boolean matches(CharSequence rawPassword, String encodedPAssword);
 
     default Map<String, Object> dtoToEntity(UserDTO userDTO){
         Map<String, Object> entityMap = new HashMap<>();

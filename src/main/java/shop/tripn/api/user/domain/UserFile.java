@@ -1,8 +1,8 @@
 package shop.tripn.api.user.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
+
 
 @Entity
 @Getter

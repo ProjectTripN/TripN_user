@@ -1,8 +1,6 @@
 package shop.tripn.api.security.domain;
 
 import io.jsonwebtoken.*;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 import java.util.Date;
