@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService{
             u.setToken(userDTO.getToken());
 
             userRepository.saveAndFlush(u); // save 안될시 saveAndFlush 변경하자
-            System.out.println("이거 모야모야"+u);
 //            String Token = provider.createToken(entityDto.getUserName(), //token 생성
 //                        userRepository.findByUserName(entityDto.getUserName()).get().getRoles());
 //            entityDto.setToken(Token);//token을 담아줌
